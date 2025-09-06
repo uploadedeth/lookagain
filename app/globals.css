@@ -100,3 +100,17 @@ input, textarea, select {
 .animate-bounce-in {
   animation: bounce-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
+
+/* Mobile menu slide animation */
+@keyframes slide-in-left {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.3s ease-out;
+}

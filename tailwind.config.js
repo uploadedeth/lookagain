@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '475px',
+      },
       fontFamily: {
         'google-sans': ['Google Sans', 'sans-serif'],
         'roboto': ['Roboto', 'sans-serif'],

@@ -119,20 +119,23 @@ const PlayGame: React.FC<PlayGameProps> = ({ onBackToMenu }) => {
       <div className="text-center animate-fade-in bg-[#262628] border border-[#3c3c3f] p-8 rounded-lg max-w-2xl mx-auto flex flex-col items-center gap-4">
         <h2 className="text-2xl font-bold text-[#e3e3e3]">Oops!</h2>
         <p className="text-md text-[#9aa0a6]">{error}</p>
-        <div className="flex gap-3">
+        <div className="flex gap-2 sm:gap-3">
           <button
             onClick={loadNewGame}
-            className="bg-[#fbbf24] hover:bg-[#f59e0b] text-[#1c1c1d] font-bold py-2 px-6 rounded-lg text-md transition-colors"
+            className="bg-[#fbbf24] hover:bg-[#f59e0b] text-[#1c1c1d] font-bold py-2 px-3 sm:px-6 rounded-lg text-xs sm:text-md transition-colors"
           >
             Try Again
           </button>
           <button
             onClick={onBackToMenu}
-            className="bg-[#3c3c3f] hover:bg-[#4a4a4d] text-[#e3e3e3] font-bold py-2 px-6 rounded-lg text-md transition-colors"
+            className="bg-[#3c3c3f] hover:bg-[#4a4a4d] text-[#e3e3e3] font-bold py-2 px-3 sm:px-6 rounded-lg text-xs sm:text-md transition-colors"
           >
-            Back to Homepage
+            <span className="hidden xs:inline">Back to Homepage</span>
+            <span className="xs:hidden">Home</span>
           </button>
         </div>
+        {/* Mobile bottom spacing for browser navigation */}
+        <div className="h-16 sm:h-0"></div>
       </div>
     );
   }
@@ -143,11 +146,6 @@ const PlayGame: React.FC<PlayGameProps> = ({ onBackToMenu }) => {
 
   return (
     <div className="w-full max-w-7xl mx-auto flex flex-col items-center gap-6 animate-fade-in">
-      <div className="text-center">
-        <h2 className="text-3xl font-bold mb-2 text-[#e3e3e3]">Spot the Differences!</h2>
-        <p className="text-[#9aa0a6]">Created by: {currentGame.creatorName}</p>
-      </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full min-h-[400px]">
         <ImageWithLoader
           src={currentGame.originalImageUrl} 
@@ -204,6 +202,7 @@ const PlayGame: React.FC<PlayGameProps> = ({ onBackToMenu }) => {
             );
           })}
         </div>
+        <p className="text-[#9aa0a6] mt-4">Created by: {currentGame.creatorName}</p>
         
         {feedback && (
           <div className="mt-2 text-center">
@@ -219,22 +218,25 @@ const PlayGame: React.FC<PlayGameProps> = ({ onBackToMenu }) => {
         )}
 
         {showResult && (
-          <div className="flex gap-3 mt-4">
+          <div className="flex gap-2 sm:gap-3 mt-4">
             <button
               onClick={loadNewGame}
-              className="bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors"
+              className="bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-2 sm:py-3 px-3 sm:px-6 rounded-lg text-sm sm:text-lg transition-colors"
               disabled={loading}
             >
               Next Game
             </button>
             <button
               onClick={onBackToMenu}
-              className="bg-[#3c3c3f] hover:bg-[#4a4a4d] text-[#e3e3e3] font-bold py-3 px-6 rounded-lg text-lg transition-colors"
+              className="bg-[#3c3c3f] hover:bg-[#4a4a4d] text-[#e3e3e3] font-bold py-2 sm:py-3 px-3 sm:px-6 rounded-lg text-sm sm:text-lg transition-colors"
             >
-              Back to Homepage
+              <span className="hidden xs:inline">Back to Homepage</span>
+              <span className="xs:hidden">Home</span>
             </button>
           </div>
         )}
+        {/* Mobile bottom spacing for browser navigation */}
+        <div className="h-16 sm:h-0"></div>
       </div>
     </div>
   );
