@@ -13,6 +13,7 @@ import {
   getDownloadURL
 } from 'firebase/storage';
 import { db, storage } from '../lib/firebase';
+import { verifyAndConsumeQuota } from './quotaService';
 
 interface GameRound {
   id?: string;
@@ -69,6 +70,16 @@ export const createGameRound = async (
   isPublic: boolean = true
 ): Promise<string> => {
   try {
+    // First, verify quota before any operations
+    console.log('Checking quota for user:', userId);
+    const quotaResult = await verifyAndConsumeQuota(userId);
+    
+    if (!quotaResult.success) {
+      throw new Error(quotaResult.error || 'Quota check failed');
+    }
+    
+    console.log('Quota verified. User games:', quotaResult.userQuota?.used, '/', quotaResult.userQuota?.limit);
+    
     // Create a new document reference to get the ID
     const gameRef = doc(collection(db, 'gameRounds'));
     const gameId = gameRef.id;
@@ -110,11 +121,7 @@ export const createGameRound = async (
     console.log('Saving game round to Firestore...');
     await setDoc(gameRef, gameRound);
 
-    // Update user's game creation count
-    const userRef = doc(db, 'users', userId);
-    await updateDoc(userRef, {
-      gamesCreated: increment(1)
-    });
+    // Note: User's gamesCreated count is already updated by verifyAndConsumeQuota
 
     console.log('Game round created successfully:', gameId);
     return gameId;

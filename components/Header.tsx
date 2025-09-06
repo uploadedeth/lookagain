@@ -17,7 +17,7 @@ const Header: React.FC = () => {
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <Link to="/" className="hover:opacity-70 transition-opacity">
           <img 
-            src="https://imagedelivery.net/6WLqUjtBbGnMsdHq6NNK_w/6c9544ec-79c6-4afd-ec90-b0ca210eb700/public"
+            src="https://imagedelivery.net/6WLqUjtBbGnMsdHq6NNK_w/7d170fc8-d414-498c-3040-bb985f103900/public"
             alt="LookAgain Logo"
             className="w-[150px] object-contain"
           />

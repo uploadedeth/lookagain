@@ -9,6 +9,7 @@ interface ImportMetaEnv {
   readonly VITE_FIREBASE_APP_ID: string
   readonly VITE_GEMINI_API_KEY: string
   readonly VITE_API_KEY: string
+  readonly VITE_APP_GAME_QUOTA?: string
 }
 
 interface ImportMeta {

@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { generateInitialImage, planDifferences, generateModifiedImage } from '../services/geminiService';
-import GameConfirmationModal from '../components/GameConfirmationModal';
+import { createGameRound } from '../services/gameService';
 import Spinner from '../components/Spinner';
+import { checkUserQuota } from '../services/quotaService';
+import { QuotaStatus } from '../config/quotas';
+import QuotaDisplay from '../components/QuotaDisplay';
+import ImageWithLoader from '../components/ImageWithLoader';
+import TypewriterText from '../components/TypewriterText';
 
 // Helper to convert a data URL string to a File object
 const dataURLtoFile = (dataurl: string, filename: string): File => {
@@ -52,10 +57,67 @@ const HomePage: React.FC = () => {
   const [originalImage, setOriginalImage] = useState<string | null>(null);
   const [modifiedImage, setModifiedImage] = useState<string | null>(null);
   const [differences, setDifferences] = useState<string[]>([]);
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [userQuota, setUserQuota] = useState<QuotaStatus | null>(null);
+  const [showGeneratedGame, setShowGeneratedGame] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [displayedDifferences, setDisplayedDifferences] = useState<string[]>([]);
+  const [currentDifferenceIndex, setCurrentDifferenceIndex] = useState(0);
+  const [allDifferencesTyped, setAllDifferencesTyped] = useState(false);
+  const typingCompleteRef = useRef<(() => void) | null>(null);
+
+  // Fetch user quota on mount and when user changes
+  useEffect(() => {
+    const fetchQuota = async () => {
+      if (user) {
+        try {
+          const quota = await checkUserQuota(user.uid);
+          setUserQuota(quota);
+        } catch (error) {
+          console.error('Error fetching quota:', error);
+        }
+      }
+    };
+    
+    fetchQuota();
+  }, [user]);
+
+  // Handle typewriter effect for differences
+  useEffect(() => {
+    if (currentDifferenceIndex < differences.length && loadingMessage === 'differences') {
+      setDisplayedDifferences(prev => [...prev, differences[currentDifferenceIndex]]);
+    }
+  }, [currentDifferenceIndex, differences, loadingMessage]);
+
+  // Check if all differences are typed
+  useEffect(() => {
+    if (displayedDifferences.length === differences.length && differences.length > 0 && loadingMessage === 'differences') {
+      // Add a small delay after the last difference is fully typed
+      const timer = setTimeout(() => {
+        setAllDifferencesTyped(true);
+        // Call the callback if it exists
+        if (typingCompleteRef.current) {
+          typingCompleteRef.current();
+          typingCompleteRef.current = null;
+        }
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [displayedDifferences, differences, loadingMessage]);
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
+    
+    // Check quota before showing difficulty modal
+    if (!user) {
+      setError('Please sign in to create games');
+      return;
+    }
+    
+    if (userQuota && userQuota.remaining === 0) {
+      setError(`You've reached your limit of ${userQuota.limit} games. Contact us to increase your quota.`);
+      return;
+    }
+    
     if (prompt.trim()) {
       setShowDifficultyModal(true);
     }
@@ -78,23 +140,42 @@ const HomePage: React.FC = () => {
       setLoadingMessage(`Planning ${numDifferences} clever differences...`);
       const plannedDifferences = await planDifferences(prompt, numDifferences);
       setDifferences(plannedDifferences);
+      
+      // Start showing differences one by one with typewriter effect
+      setDisplayedDifferences([]);
+      setCurrentDifferenceIndex(0);
+      setAllDifferencesTyped(false);
+      setLoadingMessage('differences');
 
+      // Wait for all differences to be typed
+      await new Promise<void>((resolve) => {
+        typingCompleteRef.current = resolve;
+        
+        // Timeout fallback after 30 seconds
+        const timeout = setTimeout(() => {
+          resolve();
+          typingCompleteRef.current = null;
+        }, 30000);
+        
+        // Clean up timeout if resolved earlier
+        const originalResolve = resolve;
+        resolve = () => {
+          clearTimeout(timeout);
+          originalResolve();
+        };
+      });
+      
       setLoadingMessage('Applying subtle changes...');
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       setLoadingMessage('Finalizing your puzzle...');
       const finalModifiedImageUrl = await generateModifiedImage(originalImageFile, plannedDifferences);
       setModifiedImage(finalModifiedImageUrl);
 
-      // Navigate to create page with the generated game
-      navigate('/create', { 
-        state: { 
-          originalImage: initialImageUrl,
-          modifiedImage: finalModifiedImageUrl,
-          differences: plannedDifferences,
-          prompt
-        }
-      });
+      // Show the generated game
+      setShowGeneratedGame(true);
+      setIsGenerating(false);
+      setLoadingMessage('');
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
       setError(`Failed to generate the game. ${errorMessage}`);
@@ -108,11 +189,111 @@ const HomePage: React.FC = () => {
     navigate('/play');
   };
 
+  const handleSaveGame = async () => {
+    if (!user || !userProfile || !originalImage || !modifiedImage) return;
+    
+    setIsSaving(true);
+    try {
+      const gameId = await createGameRound(
+        user.uid,
+        userProfile.displayName,
+        prompt,
+        originalImage,
+        modifiedImage,
+        differences,
+        true // isPublic
+      );
+      
+      // Refresh quota after saving
+      const updatedQuota = await checkUserQuota(user.uid);
+      setUserQuota(updatedQuota);
+      
+      // Reset the form
+      setPrompt('');
+      setOriginalImage(null);
+      setModifiedImage(null);
+      setDifferences([]);
+      setShowGeneratedGame(false);
+      
+      // Show success message
+      setError(null);
+    } catch (error) {
+      console.error('Error saving game:', error);
+      setError(error instanceof Error ? error.message : 'Failed to save game');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-[80vh]">
       <div className="w-full max-w-4xl mx-auto flex flex-col items-center px-4">
-      {/* Main greeting and input */}
-      {!isGenerating ? (
+      {/* Show generated game */}
+      {showGeneratedGame && originalImage && modifiedImage ? (
+        <div className="w-full text-center animate-fade-in">
+          <h2 className="text-3xl font-bold mb-2 text-[#e3e3e3]">Your Game is Ready!</h2>
+          <p className="text-[#9aa0a6] mb-8">{prompt}</p>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+            <div>
+              <p className="text-sm text-[#9aa0a6] mb-2">Original</p>
+              <ImageWithLoader
+                src={originalImage} 
+                alt="Original Scene" 
+                className="w-full h-auto object-contain rounded-xl shadow-2xl bg-black/20"
+              />
+            </div>
+            <div>
+              <p className="text-sm text-[#9aa0a6] mb-2">Find the differences</p>
+              <ImageWithLoader
+                src={modifiedImage} 
+                alt="Modified Scene" 
+                className="w-full h-auto object-contain rounded-xl shadow-2xl bg-black/20"
+              />
+            </div>
+          </div>
+          
+          <div className="bg-[#262628] rounded-2xl p-6 mb-6 max-w-2xl mx-auto">
+            <p className="text-[#9aa0a6] text-sm mb-4 flex items-center justify-center gap-2">
+              <span className="material-symbols-outlined text-lg">public</span>
+              Your game will be shared publicly for other players to enjoy
+            </p>
+            <p className="text-[#e3e3e3] font-medium mb-2">{differences.length} differences in this puzzle</p>
+          </div>
+          
+          <div className="flex gap-4 justify-center">
+            <button
+              onClick={handleSaveGame}
+              disabled={isSaving}
+              className="px-8 py-3 bg-[#fbbf24] hover:bg-[#f59e0b] text-[#1c1c1d] rounded-full font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              {isSaving ? (
+                <>
+                  <Spinner size="xs" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <>
+                  <span className="material-symbols-outlined">save</span>
+                  <span>Save & Share Game</span>
+                </>
+              )}
+            </button>
+            <button
+              onClick={() => {
+                setShowGeneratedGame(false);
+                setPrompt('');
+                setOriginalImage(null);
+                setModifiedImage(null);
+                setDifferences([]);
+              }}
+              className="px-8 py-3 bg-[#3c3c3f] hover:bg-[#4a4a4d] text-[#e3e3e3] rounded-full font-medium transition-all"
+            >
+              Create Another
+            </button>
+          </div>
+        </div>
+      ) : !isGenerating ? (
         <div className="w-full text-center mb-12">
           <h1 className="text-4xl font-light text-[#e3e3e3] mb-2">
             <span className="bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] bg-clip-text text-transparent">Hello</span>{authLoading ? (
@@ -153,28 +334,64 @@ const HomePage: React.FC = () => {
                 )}
               </div>
             </form>
+            
+            {/* Quota Display - only show if user has created at least 1 game */}
+            {user && userQuota && userQuota.used > 0 && (
+              <div className="mt-6 max-w-sm mx-auto">
+                <QuotaDisplay 
+                  quota={userQuota} 
+                  label="Your Game Creation Quota"
+                  showProgressBar={true}
+                />
+              </div>
+            )}
           </div>
         </div>
       ) : (
-        /* Loading animation with AI avatar */
-        <div className="w-full text-center animate-fade-in">
+        /* Loading animation with banana */
+        <div className="w-full text-center animate-fade-in max-w-2xl">
           <div className="mb-8 flex justify-center">
-            <div className="w-20 h-20 bg-[#fbbf24] rounded-full flex items-center justify-center animate-pulse">
-              <span className="material-symbols-outlined text-4xl">smart_toy</span>
-            </div>
+            <div className="text-8xl animate-bounce">🍌</div>
           </div>
           <h2 className="text-2xl font-light text-[#e3e3e3] mb-4">Creating your game...</h2>
-          <p className="text-lg text-[#9aa0a6] mb-2">{loadingMessage}</p>
-          <div className="flex justify-center gap-2 mt-4">
-            <div className="w-2 h-2 bg-[#fbbf24] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-            <div className="w-2 h-2 bg-[#fbbf24] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-            <div className="w-2 h-2 bg-[#fbbf24] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-          </div>
+          
+          {loadingMessage === 'differences' ? (
+            <div className="text-left bg-[#262628] rounded-2xl p-6 mb-4">
+              <p className="text-[#9aa0a6] mb-4">Here's what I'm planning:</p>
+              <div className="space-y-2">
+                {displayedDifferences.map((diff, index) => (
+                  <div key={index} className="flex items-start gap-2">
+                    <span className="text-[#fbbf24]">{index + 1}.</span>
+                    {index === displayedDifferences.length - 1 && currentDifferenceIndex < differences.length ? (
+                      <TypewriterText 
+                        text={diff} 
+                        speed={20}
+                        onComplete={() => setCurrentDifferenceIndex(prev => prev + 1)}
+                        className="text-[#e3e3e3]"
+                      />
+                    ) : (
+                      <span className="text-[#e3e3e3]">{diff}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="text-lg text-[#9aa0a6] mb-2">{loadingMessage}</p>
+          )}
+          
+          {loadingMessage !== 'differences' && (
+            <div className="flex justify-center gap-2 mt-4">
+              <div className="w-2 h-2 bg-[#fbbf24] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+              <div className="w-2 h-2 bg-[#fbbf24] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+              <div className="w-2 h-2 bg-[#fbbf24] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+            </div>
+          )}
         </div>
       )}
 
-      {/* Action buttons - only show when not generating */}
-      {!isGenerating && (
+      {/* Action buttons - only show when not generating and not showing generated game */}
+      {!isGenerating && !showGeneratedGame && (
         <div className="flex gap-3">
           <button
             onClick={handlePlayClick}

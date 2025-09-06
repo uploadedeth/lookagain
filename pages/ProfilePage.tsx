@@ -4,6 +4,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import ImageWithLoader from '../components/ImageWithLoader';
+import { checkUserQuota } from '../services/quotaService';
+import { QuotaStatus } from '../config/quotas';
+import QuotaDisplay from '../components/QuotaDisplay';
 
 interface GameRound {
   id: string;
@@ -21,6 +24,7 @@ const ProfilePage: React.FC = () => {
   const [userPuzzles, setUserPuzzles] = useState<GameRound[]>([]);
   const [puzzlesLoading, setPuzzlesLoading] = useState(true);
   const [expandedPuzzle, setExpandedPuzzle] = useState<string | null>(null);
+  const [userQuota, setUserQuota] = useState<QuotaStatus | null>(null);
 
   // Redirect to home if not authenticated
   React.useEffect(() => {
@@ -62,6 +66,24 @@ const ProfilePage: React.FC = () => {
 
     if (user) {
       fetchUserPuzzles();
+    }
+  }, [user]);
+
+  // Fetch user quota
+  useEffect(() => {
+    const fetchQuota = async () => {
+      if (user) {
+        try {
+          const quota = await checkUserQuota(user.uid);
+          setUserQuota(quota);
+        } catch (error) {
+          console.error('Error fetching quota:', error);
+        }
+      }
+    };
+    
+    if (user) {
+      fetchQuota();
     }
   }, [user]);
 
@@ -133,6 +155,18 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Quota Display */}
+      {userQuota && (
+        <div className="mb-16 max-w-md">
+          <QuotaDisplay 
+            quota={userQuota} 
+            label="Game Creation Quota"
+            showProgressBar={true}
+            className="bg-[#262628] p-6 rounded-2xl"
+          />
+        </div>
+      )}
 
       {/* Stats Section */}
       <div className="mb-16">
