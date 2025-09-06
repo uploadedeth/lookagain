@@ -1,0 +1,6 @@
+{
+  "name": "LookAgain",
+  "description": "An AI-powered 'Spot the Difference' game. Describe a scene and challenge yourself to find the differences in the generated images.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
