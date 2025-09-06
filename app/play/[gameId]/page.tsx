@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '../../components/AuthProvider';
-import { getSpecificGame, getUserGamePlay, verifyAnswerAndRecordPlay } from '../../lib/game-client';
 import Spinner from '../../components/Spinner';
 import ImageWithLoader from '../../components/ImageWithLoader';
 
@@ -14,7 +13,6 @@ interface GameRound {
   prompt: string;
   originalImageUrl: string;
   modifiedImageUrl: string;
-  difficultyRange: string;
   playCount: number;
 }
 
@@ -64,29 +62,34 @@ const SpecificGamePage: React.FC = () => {
     setError(null);
 
     try {
-      // Get the specific game
-      const game = await getSpecificGame(gameId, user.uid);
+      // Get the specific game (secure API - no sensitive data)
+      const gameResponse = await fetch(`/api/game/${gameId}?userId=${user.uid}`);
       
-      if (!game) {
-        setError('Game not found or you cannot play this game');
+      if (!gameResponse.ok) {
+        const errorData = await gameResponse.json();
+        setError(errorData.error || 'Failed to load game');
         setLoading(false);
         return;
       }
 
+      const game = await gameResponse.json();
+
       // Check if user has already played this game
-      const userPlay = await getUserGamePlay(gameId, user.uid);
+      const gamePlayResponse = await fetch(`/api/game-play/${gameId}?userId=${user.uid}`);
       
-      if (userPlay) {
-        setPreviousPlay(userPlay);
-        setShowResult(true);
-        setActualCount(userPlay.correctAnswer);
-        setPointsEarned(userPlay.score);
-        setFeedback(userPlay.isCorrect ? 'Correct!' : 'Incorrect');
+      if (gamePlayResponse.ok) {
+        const gamePlayData = await gamePlayResponse.json();
+        
+        if (gamePlayData.gamePlay) {
+          setPreviousPlay(gamePlayData.gamePlay);
+          setShowResult(true);
+          setActualCount(gamePlayData.gamePlay.correctAnswer);
+          setPointsEarned(gamePlayData.gamePlay.score);
+          setFeedback(gamePlayData.gamePlay.isCorrect ? 'Correct!' : 'Incorrect');
+        }
       }
 
-      // Remove the differences array to prevent cheating
-      const { differences, ...safeGameData } = game;
-      setCurrentGame(safeGameData as GameRound);
+      setCurrentGame(game);
       
     } catch (err) {
       console.error('Error loading specific game:', err);
@@ -103,12 +106,25 @@ const SpecificGamePage: React.FC = () => {
     setSelectedGuess(guess);
     
     try {
-      const result = await verifyAnswerAndRecordPlay(
-        currentGame.id,
-        user.uid,
-        userProfile.displayName,
-        guess
-      );
+      const response = await fetch('/api/verify-answer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          gameId: currentGame.id,
+          userId: user.uid,
+          userName: userProfile.displayName,
+          selectedAnswer: guess
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to verify answer');
+      }
+
+      const result = await response.json();
       
       setActualCount(result.actualCount);
       setPointsEarned(result.pointsEarned);
@@ -116,7 +132,7 @@ const SpecificGamePage: React.FC = () => {
       setShowResult(true);
     } catch (error) {
       console.error('Error verifying answer:', error);
-      setError('Failed to submit answer. Please try again.');
+      setError(error instanceof Error ? error.message : 'Failed to submit answer. Please try again.');
     } finally {
       setIsVerifying(false);
     }
@@ -133,7 +149,7 @@ const SpecificGamePage: React.FC = () => {
           <div className="mb-6 md:mb-8 flex justify-center">
             <div className="text-6xl sm:text-7xl md:text-8xl animate-bounce">🍌</div>
           </div>
-          <h2 className="text-xl sm:text-2xl font-light text-[#e3e3e3] mb-4">Loading your game...</h2>
+          <h2 className="text-xl sm:text-2xl font-light text-[#e3e3e3] mb-4">Loading puzzle...</h2>
           <div className="flex justify-center gap-2 mt-4">
             <div className="w-2 h-2 bg-[#fbbf24] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
             <div className="w-2 h-2 bg-[#fbbf24] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './AuthProvider';
-import { getRandomUnplayedGame, verifyAnswerAndRecordPlay } from '../lib/game-client';
 import Spinner from './Spinner';
 import ImageWithLoader from './ImageWithLoader';
 
@@ -13,7 +12,6 @@ interface GameRound {
   prompt: string;
   originalImageUrl: string;
   modifiedImageUrl: string;
-  difficultyRange: string;
   playCount: number;
 }
 
@@ -55,14 +53,15 @@ const PlayGame: React.FC<PlayGameProps> = ({ onBackToMenu }) => {
     setActualCount(null);
 
     try {
-      const game = await getRandomUnplayedGame(user.uid);
-      if (!game) {
-        setError('No more games available! Check back later for new puzzles.');
+      const response = await fetch(`/api/random-game?userId=${user.uid}`);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.error || 'No more games available! Check back later for new puzzles.');
         setCurrentGame(null);
       } else {
-        // Remove the differences array to prevent cheating
-        const { differences, ...safeGameData } = game;
-        setCurrentGame(safeGameData as GameRound);
+        const game = await response.json();
+        setCurrentGame(game);
       }
     } catch (err) {
       console.error('Error loading game:', err);
@@ -79,12 +78,25 @@ const PlayGame: React.FC<PlayGameProps> = ({ onBackToMenu }) => {
     setIsVerifying(true);
 
     try {
-      const result = await verifyAnswerAndRecordPlay(
-        currentGame.id,
-        user.uid,
-        userProfile.displayName,
-        guess
-      );
+      const response = await fetch('/api/verify-answer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          gameId: currentGame.id,
+          userId: user.uid,
+          userName: userProfile.displayName,
+          selectedAnswer: guess
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to verify answer');
+      }
+
+      const result = await response.json();
 
       setShowResult(true);
       setPointsEarned(result.pointsEarned);
@@ -97,7 +109,7 @@ const PlayGame: React.FC<PlayGameProps> = ({ onBackToMenu }) => {
       }
     } catch (err) {
       console.error('Error checking answer:', err);
-      setError('Failed to verify answer. Please try again.');
+      setError(err instanceof Error ? err.message : 'Failed to verify answer. Please try again.');
     } finally {
       setIsVerifying(false);
     }
