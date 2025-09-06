@@ -18,9 +18,13 @@ interface LeaderboardProps {
 
 const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
   const { user } = useAuth();
-  const [leaders, setLeaders] = useState<LeaderboardUser[]>([]);
+  const [allLeaders, setAllLeaders] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const USERS_PER_PAGE = 10;
+  const MAX_USERS = 100;
 
   // Handle click outside to close
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -38,7 +42,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
       const usersQuery = query(
         collection(db, 'users'),
         orderBy('score', 'desc'),
-        limit(50)
+        limit(MAX_USERS)
       );
       
       const snapshot = await getDocs(usersQuery);
@@ -57,7 +61,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
         }
       });
       
-      setLeaders(leaderboardData);
+      setAllLeaders(leaderboardData);
     } catch (err) {
       console.error('Error fetching leaderboard:', err);
       setError('Failed to load leaderboard');
@@ -72,6 +76,16 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
     if (index === 2) return '🥉';
     return `#${index + 1}`;
   };
+
+  // Calculate pagination
+  const totalPages = Math.ceil(allLeaders.length / USERS_PER_PAGE);
+  const startIndex = (currentPage - 1) * USERS_PER_PAGE;
+  const endIndex = startIndex + USERS_PER_PAGE;
+  const currentPageLeaders = allLeaders.slice(startIndex, endIndex);
+
+  // Find user's rank if they're in the leaderboard
+  const userRank = user ? allLeaders.findIndex(leader => leader.uid === user.uid) + 1 : -1;
+  const userPage = userRank > 0 ? Math.ceil(userRank / USERS_PER_PAGE) : -1;
 
   return (
     <div 
@@ -102,15 +116,32 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
             <div className="text-center py-12">
               <p className="text-red-400">{error}</p>
             </div>
-          ) : leaders.length === 0 ? (
+          ) : allLeaders.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-400">No scores yet. Be the first to play!</p>
             </div>
           ) : (
-            <div className="space-y-3">
-              {leaders.map((leader, index) => {
-                const isCurrentUser = user?.uid === leader.uid;
-                return (
+            <>
+              {/* Show user's position if not on current page */}
+              {userRank > 0 && userPage !== currentPage && (
+                <div className="mb-4 p-3 bg-[#fbbf24]/10 border border-[#fbbf24]/20 rounded-xl text-sm">
+                  <p className="text-[#fbbf24]">
+                    Your rank: #{userRank} 
+                    <button 
+                      onClick={() => setCurrentPage(userPage)}
+                      className="ml-2 underline hover:no-underline"
+                    >
+                      (Go to your page)
+                    </button>
+                  </p>
+                </div>
+              )}
+              
+              <div className="space-y-3">
+                {currentPageLeaders.map((leader, index) => {
+                  const globalIndex = startIndex + index;
+                  const isCurrentUser = user?.uid === leader.uid;
+                  return (
                   <div
                     key={leader.uid}
                     className={`flex items-center gap-4 p-4 rounded-2xl transition-all ${
@@ -120,7 +151,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
                     }`}
                   >
                     <div className="text-2xl font-bold w-12 text-center">
-                      {getRankDisplay(index)}
+                      {getRankDisplay(globalIndex)}
                     </div>
                     
                     <div className="flex items-center gap-3 flex-1">
@@ -160,6 +191,60 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
                 );
               })}
             </div>
+            
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-6">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="p-2 rounded-lg bg-[#3c3c3f] hover:bg-[#4a4a4d] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  <span className="material-symbols-outlined">chevron_left</span>
+                </button>
+                
+                <div className="flex items-center gap-1">
+                  {/* Show page numbers */}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => {
+                    // Show first page, last page, current page, and pages around current
+                    if (
+                      page === 1 || 
+                      page === totalPages || 
+                      (page >= currentPage - 1 && page <= currentPage + 1)
+                    ) {
+                      return (
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={`w-10 h-10 rounded-lg font-medium transition-all ${
+                            page === currentPage
+                              ? 'bg-[#fbbf24] text-[#1c1c1d]'
+                              : 'bg-[#3c3c3f] hover:bg-[#4a4a4d] text-[#e3e3e3]'
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      );
+                    } else if (
+                      page === currentPage - 2 || 
+                      page === currentPage + 2
+                    ) {
+                      return <span key={page} className="text-[#9aa0a6]">...</span>;
+                    }
+                    return null;
+                  })}
+                </div>
+                
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="p-2 rounded-lg bg-[#3c3c3f] hover:bg-[#4a4a4d] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  <span className="material-symbols-outlined">chevron_right</span>
+                </button>
+              </div>
+            )}
+            </>
           )}
         </div>
       </div>
