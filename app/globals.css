@@ -114,3 +114,11 @@ input, textarea, select {
 .animate-slide-in-left {
   animation: slide-in-left 0.3s ease-out;
 }
+
+/* Line clamp utilities */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}

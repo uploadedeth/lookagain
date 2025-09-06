@@ -10,6 +10,21 @@ import QuotaDisplay from './QuotaDisplay';
 import ImageWithLoader from './ImageWithLoader';
 import TypewriterText from './TypewriterText';
 
+// GameRound interface
+interface GameRound {
+  id: string;
+  creatorId: string;
+  creatorName: string;
+  prompt: string;
+  originalImageUrl: string;
+  modifiedImageUrl: string;
+  differences: string[];
+  difficultyRange: string;
+  createdAt: any;
+  playCount: number;
+  isPublic: boolean;
+}
+
 // Helper to convert a data URL string to a File object
 const dataURLtoFile = (dataurl: string, filename: string): File => {
   const arr = dataurl.split(',');
@@ -64,6 +79,37 @@ const HomePage: React.FC = () => {
   const [currentDifferenceIndex, setCurrentDifferenceIndex] = useState(0);
   const [allDifferencesTyped, setAllDifferencesTyped] = useState(false);
   const typingCompleteRef = useRef<(() => void) | null>(null);
+  
+  // Community games state
+  const [communityGames, setCommunityGames] = useState<GameRound[]>([]);
+  const [loadingCommunityGames, setLoadingCommunityGames] = useState(true);
+  const [communityGamesError, setCommunityGamesError] = useState<string | null>(null);
+
+  // Fetch community games
+  const fetchCommunityGames = async () => {
+    try {
+      setLoadingCommunityGames(true);
+      setCommunityGamesError(null);
+      
+      const response = await fetch('/api/community-games');
+      if (!response.ok) {
+        throw new Error('Failed to fetch community games');
+      }
+      
+      const data = await response.json();
+      setCommunityGames(data.games);
+    } catch (error) {
+      console.error('Error fetching community games:', error);
+      setCommunityGamesError('Failed to load community games');
+    } finally {
+      setLoadingCommunityGames(false);
+    }
+  };
+
+  // Fetch community games on mount
+  useEffect(() => {
+    fetchCommunityGames();
+  }, []);
 
   // Fetch user quota on mount and when user changes
   useEffect(() => {
@@ -207,6 +253,9 @@ const HomePage: React.FC = () => {
       const updatedQuota = await checkUserQuota(user.uid);
       setUserQuota(updatedQuota);
       
+      // Refresh community games to show the new game
+      fetchCommunityGames();
+      
       // Reset the form
       setPrompt('');
       setOriginalImage(null);
@@ -225,7 +274,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[70vh] sm:min-h-[80vh]">
+    <div className="flex items-center justify-center min-h-[70vh] sm:min-h-[80vh] mt-10">
       <div className="w-full max-w-4xl mx-auto flex flex-col items-center px-2 sm:px-4">
       {/* Show generated game */}
       {showGeneratedGame && originalImage && modifiedImage ? (
@@ -393,7 +442,7 @@ const HomePage: React.FC = () => {
 
       {/* Action buttons - only show when not generating and not showing generated game */}
       {!isGenerating && !showGeneratedGame && (
-        <div className="flex flex-col sm:flex-row gap-3 px-4">
+        <div className="flex flex-col sm:flex-row gap-3 px-4 mb-12">
           <button
             onClick={handlePlayClick}
             className="px-6 sm:px-8 py-3 bg-[#262628] hover:bg-[#2d2d30] text-[#e3e3e3] rounded-full transition-all flex items-center justify-center gap-3 text-sm sm:text-base"
@@ -408,6 +457,84 @@ const HomePage: React.FC = () => {
             <span className="material-symbols-outlined text-xl">help_outline</span>
             <span className="font-medium">How it works</span>
           </button>
+        </div>
+      )}
+
+      {/* Community Made Section - only show when not generating and not showing generated game */}
+      {!isGenerating && !showGeneratedGame && (
+        <div className="w-full px-4 mt-10">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#e3e3e3] mb-6 text-center flex items-center justify-center gap-2">
+              <span className="material-symbols-outlined text-xl sm:text-2xl">palette</span>
+              Community Made
+            </h2>
+            
+            {loadingCommunityGames ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                {/* Skeleton tiles - 2 rows worth */}
+                {Array.from({ length: 8 }, (_, index) => (
+                  <div
+                    key={`skeleton-${index}`}
+                    className="bg-[#262628] rounded-xl overflow-hidden animate-pulse"
+                  >
+                    <div className="aspect-square bg-[#1c1c1d]"></div>
+                    <div className="p-4">
+                      <div className="h-4 bg-[#1c1c1d] rounded mb-2"></div>
+                      <div className="h-3 bg-[#1c1c1d] rounded w-3/4 mb-2"></div>
+                      <div className="flex items-center justify-between">
+                        <div className="h-3 bg-[#1c1c1d] rounded w-1/2"></div>
+                        <div className="h-3 bg-[#1c1c1d] rounded w-8"></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : communityGamesError ? (
+              <div className="text-center py-12">
+                <p className="text-red-400 mb-4">{communityGamesError}</p>
+                <button
+                  onClick={fetchCommunityGames}
+                  className="px-4 py-2 bg-[#262628] hover:bg-[#2d2d30] text-[#e3e3e3] rounded-full transition-all text-sm"
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : communityGames.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-[#9aa0a6]">No community games yet. Be the first to create one!</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                {communityGames.map((game) => (
+                  <div
+                    key={game.id}
+                    className="bg-[#262628] rounded-xl overflow-hidden hover:bg-[#2d2d30] transition-all cursor-pointer group"
+                    onClick={() => router.push('/play')}
+                  >
+                    <div className="aspect-square relative overflow-hidden">
+                      <ImageWithLoader
+                        src={game.originalImageUrl}
+                        alt={game.prompt}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-[#e3e3e3] font-medium text-sm mb-2 line-clamp-2">
+                        {game.prompt}
+                      </h3>
+                      <div className="flex items-center justify-between text-xs text-[#9aa0a6]">
+                        <span>by {game.creatorName}</span>
+                        <div className="flex items-center gap-1">
+                          <span className="material-symbols-outlined text-sm">play_arrow</span>
+                          <span>{game.playCount}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
