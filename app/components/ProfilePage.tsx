@@ -117,36 +117,36 @@ const ProfilePage: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-8 mt-10">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 mt-6 sm:mt-10">
       {/* Profile Header */}
-      <div className="mb-16">
+      <div className="mb-8 sm:mb-16">
         <button
           onClick={() => router.push('/')}
-          className="mb-8 px-4 py-2 -ml-4 text-[#9aa0a6] hover:text-[#e3e3e3] hover:bg-[#262628] rounded-full transition-all flex items-center gap-2"
+          className="mb-6 sm:mb-8 px-3 sm:px-4 py-2 -ml-3 sm:-ml-4 text-[#9aa0a6] hover:text-[#e3e3e3] hover:bg-[#262628] rounded-full transition-all flex items-center gap-2 text-sm sm:text-base"
         >
-          <span className="material-symbols-outlined">arrow_back</span>
+          <span className="material-symbols-outlined text-lg sm:text-xl">arrow_back</span>
           Back to Home
         </button>
         
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 sm:gap-6">
           {userProfile.photoURL ? (
             <img 
               src={userProfile.photoURL} 
               alt={userProfile.displayName}
-              className="w-24 h-24 rounded-full object-cover"
+              className="w-16 h-16 sm:w-24 sm:h-24 rounded-full object-cover"
               referrerPolicy="no-referrer"
             />
           ) : (
-            <div className="w-24 h-24 rounded-full bg-[#fbbf24] flex items-center justify-center">
-              <span className="text-3xl font-medium text-[#1c1c1d]">
+            <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-[#fbbf24] flex items-center justify-center">
+              <span className="text-xl sm:text-3xl font-medium text-[#1c1c1d]">
                 {userProfile.displayName?.charAt(0).toUpperCase() || '?'}
               </span>
             </div>
           )}
-          <div>
-            <h1 className="text-4xl font-light text-[#e3e3e3] mb-2">{userProfile.displayName}</h1>
-            <p className="text-[#9aa0a6]">{userProfile.email}</p>
-            <p className="text-[#9aa0a6] text-sm mt-2">
+          <div className="flex-1">
+            <h1 className="text-2xl sm:text-4xl font-light text-[#e3e3e3] mb-1 sm:mb-2">{userProfile.displayName}</h1>
+            <p className="text-[#9aa0a6] text-sm sm:text-base">{userProfile.email}</p>
+            <p className="text-[#9aa0a6] text-xs sm:text-sm mt-1 sm:mt-2">
               Member since {userProfile.createdAt && new Date((userProfile.createdAt as any).seconds ? (userProfile.createdAt as any).seconds * 1000 : userProfile.createdAt).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
@@ -159,38 +159,38 @@ const ProfilePage: React.FC = () => {
 
       {/* Quota Display */}
       {userQuota && (
-        <div className="mb-16 max-w-md">
+        <div className="mb-8 sm:mb-16 max-w-md">
           <QuotaDisplay 
             quota={userQuota} 
             label="Game Creation Quota"
             showProgressBar={true}
-            className="bg-[#262628] p-6 rounded-2xl"
+            className="bg-[#262628] p-4 sm:p-6 rounded-2xl"
           />
         </div>
       )}
 
       {/* Stats Section */}
-      <div className="mb-16">
-        <h2 className="text-2xl font-light text-[#9aa0a6] mb-8">My Stats</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div className="mb-8 sm:mb-16">
+        <h2 className="text-xl sm:text-2xl font-light text-[#9aa0a6] mb-6 sm:mb-8">My Stats</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-12">
           <div className="text-center">
-            <p className="text-5xl font-medium text-[#e3e3e3] mb-2">{userProfile.score || 0}</p>
-            <p className="text-lg text-[#9aa0a6]">Total Score</p>
+            <p className="text-3xl sm:text-5xl font-medium text-[#e3e3e3] mb-1 sm:mb-2">{userProfile.score || 0}</p>
+            <p className="text-sm sm:text-lg text-[#9aa0a6]">Total Score</p>
           </div>
           <div className="text-center">
-            <p className="text-5xl font-medium text-[#e3e3e3] mb-2">{userProfile.gamesCreated || 0}</p>
-            <p className="text-lg text-[#9aa0a6]">Games Created</p>
+            <p className="text-3xl sm:text-5xl font-medium text-[#e3e3e3] mb-1 sm:mb-2">{userProfile.gamesCreated || 0}</p>
+            <p className="text-sm sm:text-lg text-[#9aa0a6]">Games Created</p>
           </div>
           <div className="text-center">
-            <p className="text-5xl font-medium text-[#e3e3e3] mb-2">{userProfile.gamesPlayed || 0}</p>
-            <p className="text-lg text-[#9aa0a6]">Games Played</p>
+            <p className="text-3xl sm:text-5xl font-medium text-[#e3e3e3] mb-1 sm:mb-2">{userProfile.gamesPlayed || 0}</p>
+            <p className="text-sm sm:text-lg text-[#9aa0a6]">Games Played</p>
           </div>
         </div>
       </div>
 
       {/* My Puzzles Section */}
-      <div className="mb-16">
-        <h2 className="text-2xl font-light text-[#9aa0a6] mb-8">My Puzzles</h2>
+      <div className="mb-8 sm:mb-16">
+        <h2 className="text-xl sm:text-2xl font-light text-[#9aa0a6] mb-6 sm:mb-8">My Puzzles</h2>
         
         {puzzlesLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

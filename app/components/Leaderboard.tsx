@@ -94,21 +94,21 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
       className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
       onClick={handleBackdropClick}
     >
-      <div className="bg-[#262628] rounded-3xl max-w-4xl w-full max-h-[80vh] overflow-hidden animate-bounce-in">
-        <div className="p-8 border-b border-[#3c3c3f] flex justify-between items-center">
-          <h2 className="text-2xl font-normal text-[#e3e3e3] flex items-center gap-2">
-            <span className="material-symbols-outlined">leaderboard</span>
+      <div className="bg-[#262628] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[85vh] sm:max-h-[80vh] overflow-hidden animate-bounce-in">
+        <div className="p-4 sm:p-8 border-b border-[#3c3c3f] flex justify-between items-center">
+          <h2 className="text-lg sm:text-2xl font-normal text-[#e3e3e3] flex items-center gap-2">
+            <span className="material-symbols-outlined text-xl sm:text-2xl">leaderboard</span>
             Leaderboard
           </h2>
           <button
             onClick={onClose}
-            className="text-[#9aa0a6] hover:text-[#e3e3e3] transition-colors text-2xl p-2 hover:bg-[#3c3c3f] rounded-full"
+            className="text-[#9aa0a6] hover:text-[#e3e3e3] transition-colors text-xl sm:text-2xl p-1 sm:p-2 hover:bg-[#3c3c3f] rounded-full"
           >
             ✕
           </button>
         </div>
 
-        <div className="p-6 overflow-y-auto max-h-[calc(80vh-100px)]">
+        <div className="p-3 sm:p-6 overflow-y-auto max-h-[calc(85vh-80px)] sm:max-h-[calc(80vh-100px)]">
           {loading ? (
             <div className="flex flex-col items-center gap-4 py-12">
               <Spinner size="md" />
@@ -126,7 +126,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
             <>
               {/* Show user's position if not on current page */}
               {userRank > 0 && userPage !== currentPage && (
-                <div className="mb-4 p-3 bg-[#fbbf24]/10 border border-[#fbbf24]/20 rounded-xl text-sm">
+                <div className="mb-3 sm:mb-4 p-2 sm:p-3 bg-[#fbbf24]/10 border border-[#fbbf24]/20 rounded-xl text-xs sm:text-sm">
                   <p className="text-[#fbbf24]">
                     Your rank: #{userRank} 
                     <button 
@@ -139,29 +139,29 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
                 </div>
               )}
               
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {currentPageLeaders.map((leader, index) => {
                   const globalIndex = startIndex + index;
                   const isCurrentUser = user?.uid === leader.uid;
                   return (
                   <div
                     key={leader.uid}
-                    className={`flex items-center gap-4 p-4 rounded-2xl transition-all ${
+                    className={`flex items-center gap-2 sm:gap-4 p-3 sm:p-4 rounded-xl sm:rounded-2xl transition-all ${
                       isCurrentUser 
                         ? 'bg-[#fbbf24]/10 border border-[#fbbf24]/20' 
                         : 'bg-[#1c1c1d] hover:bg-[#2d2d30]'
                     }`}
                   >
-                    <div className="text-2xl font-bold w-12 text-center">
+                    <div className="text-lg sm:text-2xl font-bold w-8 sm:w-12 text-center">
                       {getRankDisplay(globalIndex)}
                     </div>
                     
-                    <div className="flex items-center gap-3 flex-1">
+                    <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                       {leader.photoURL ? (
                         <img 
                           src={leader.photoURL} 
                           alt={leader.displayName}
-                          className="w-10 h-10 rounded-full object-cover"
+                          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0"
                           onError={(e) => {
                             e.currentTarget.style.display = 'none';
                             e.currentTarget.parentElement?.querySelector('.avatar-fallback')?.classList.remove('hidden');
@@ -169,25 +169,25 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
                           referrerPolicy="no-referrer"
                         />
                       ) : null}
-                      <div className={`w-10 h-10 rounded-full bg-[#3c3c3f] flex items-center justify-center avatar-fallback ${leader.photoURL ? 'hidden' : ''}`}>
-                        <span className="text-lg font-medium text-[#e3e3e3]">
+                      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#3c3c3f] flex items-center justify-center avatar-fallback flex-shrink-0 ${leader.photoURL ? 'hidden' : ''}`}>
+                        <span className="text-sm sm:text-lg font-medium text-[#e3e3e3]">
                           {leader.displayName?.charAt(0).toUpperCase() || '?'}
                         </span>
                       </div>
-                      <div>
-                        <p className="font-medium text-lg text-[#e3e3e3]">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-sm sm:text-lg text-[#e3e3e3] truncate">
                           {leader.displayName}
-                          {isCurrentUser && <span className="text-[#fbbf24] ml-2">(You)</span>}
+                          {isCurrentUser && <span className="text-[#fbbf24] ml-1 sm:ml-2">(You)</span>}
                         </p>
-                        <p className="text-sm text-[#9aa0a6]">
+                        <p className="text-xs sm:text-sm text-[#9aa0a6]">
                           {leader.gamesPlayed} game{leader.gamesPlayed !== 1 ? 's' : ''} played
                         </p>
                       </div>
                     </div>
                     
-                    <div className="text-right">
-                      <p className="text-2xl font-medium text-[#fbbf24]">{leader.score}</p>
-                      <p className="text-sm text-[#9aa0a6]">points</p>
+                    <div className="text-right flex-shrink-0">
+                      <p className="text-lg sm:text-2xl font-medium text-[#fbbf24]">{leader.score}</p>
+                      <p className="text-xs sm:text-sm text-[#9aa0a6]">points</p>
                     </div>
                   </div>
                 );
@@ -196,13 +196,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
             
             {/* Pagination Controls */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-6">
+              <div className="flex items-center justify-center gap-1 sm:gap-2 mt-4 sm:mt-6">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className="p-2 rounded-lg bg-[#3c3c3f] hover:bg-[#4a4a4d] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="p-1.5 sm:p-2 rounded-lg bg-[#3c3c3f] hover:bg-[#4a4a4d] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
-                  <span className="material-symbols-outlined">chevron_left</span>
+                  <span className="material-symbols-outlined text-lg sm:text-xl">chevron_left</span>
                 </button>
                 
                 <div className="flex items-center gap-1">
@@ -218,7 +218,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
                         <button
                           key={page}
                           onClick={() => setCurrentPage(page)}
-                          className={`w-10 h-10 rounded-lg font-medium transition-all ${
+                          className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg font-medium transition-all text-sm sm:text-base ${
                             page === currentPage
                               ? 'bg-[#fbbf24] text-[#1c1c1d]'
                               : 'bg-[#3c3c3f] hover:bg-[#4a4a4d] text-[#e3e3e3]'
@@ -231,7 +231,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
                       page === currentPage - 2 || 
                       page === currentPage + 2
                     ) {
-                      return <span key={page} className="text-[#9aa0a6]">...</span>;
+                      return <span key={page} className="text-[#9aa0a6] text-sm">...</span>;
                     }
                     return null;
                   })}
@@ -240,9 +240,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className="p-2 rounded-lg bg-[#3c3c3f] hover:bg-[#4a4a4d] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="p-1.5 sm:p-2 rounded-lg bg-[#3c3c3f] hover:bg-[#4a4a4d] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
-                  <span className="material-symbols-outlined">chevron_right</span>
+                  <span className="material-symbols-outlined text-lg sm:text-xl">chevron_right</span>
                 </button>
               </div>
             )}

@@ -303,7 +303,7 @@ const HomePage: React.FC = () => {
               </span>
             ) : user && userProfile ? `, ${userProfile.displayName}` : ''}
           </h1>
-          <p className="text-lg sm:text-xl text-[#6e7681] mb-6 md:mb-8 px-4">Create your spot-the-difference game</p>
+          <p className="text-lg sm:text-xl text-[#6e7681] mb-6 md:mb-8 px-4">Turn your imagination into mind-bending visual puzzles</p>
           
           {/* Input container */}
           <div className="max-w-2xl mx-auto w-full px-4">
@@ -399,7 +399,7 @@ const HomePage: React.FC = () => {
             className="px-6 sm:px-8 py-3 bg-[#262628] hover:bg-[#2d2d30] text-[#e3e3e3] rounded-full transition-all flex items-center justify-center gap-3 text-sm sm:text-base"
           >
             <span className="material-symbols-outlined text-xl">sports_esports</span>
-            <span className="font-medium">Play Community Games</span>
+            <span className="font-medium">Play Community Puzzles</span>
           </button>
           <button
             onClick={() => setShowHowItWorksModal(true)}
@@ -501,12 +501,12 @@ const HomePage: React.FC = () => {
               <div>
                 <h3 className="text-base sm:text-lg font-medium text-[#fbbf24] mb-2 sm:mb-3 flex items-center gap-2">
                   <span className="material-symbols-outlined text-lg sm:text-xl">sports_esports</span>
-                  Play Community Games
+                  Play Community Puzzles
                 </h3>
                 <div className="space-y-2 sm:space-y-3 text-[#9aa0a6] text-sm sm:text-base">
                   <div className="flex gap-2 sm:gap-3">
                     <span className="text-[#e3e3e3] font-medium">1.</span>
-                    <p>Click "Play Community Games" to get a random puzzle</p>
+                    <p>Click "Play Community Puzzles" to get a random puzzle</p>
                   </div>
                   <div className="flex gap-2 sm:gap-3">
                     <span className="text-[#e3e3e3] font-medium">2.</span>

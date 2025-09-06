@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthProvider';
 import Spinner from './Spinner';
 
-const SignInButton: React.FC = () => {
+const 
+SignInButton: React.FC = () => {
   const router = useRouter();
   const { user, userProfile, loading, signInWithGoogle, signOut } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -36,7 +37,7 @@ const SignInButton: React.FC = () => {
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setShowDropdown(!showDropdown)}
-          className="flex items-center gap-2 px-2 md:px-3 py-2 hover:bg-[#262628] rounded-full transition-all w-[180px] justify-start whitespace-nowrap overflow-hidden"
+          className="flex items-center gap-2 px-2 md:px-3 py-2 hover:bg-[#262628] rounded-full transition-all w-auto md:w-[180px] justify-start whitespace-nowrap overflow-hidden"
         >
           {userProfile.photoURL ? (
             <img 
@@ -101,7 +102,7 @@ const SignInButton: React.FC = () => {
   return (
     <button
       onClick={signInWithGoogle}
-      className="flex items-center gap-2 px-3 md:px-5 py-2.5 bg-[#262628] hover:bg-[#262628]/50 text-[#e3e3e3] font-medium rounded-full transition-all text-sm md:text-base w-[180px] justify-center whitespace-nowrap"
+      className="flex items-center gap-2 px-5 py-2.5 bg-[#262628] hover:bg-[#262628]/50 text-[#e3e3e3] font-medium rounded-full transition-all text-sm md:text-base justify-center whitespace-nowrap"
     >
       <svg className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" viewBox="0 0 24 24">
         <path

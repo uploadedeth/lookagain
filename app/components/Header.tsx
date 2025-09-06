@@ -76,13 +76,15 @@ const Header: React.FC = () => {
             <span className="material-symbols-outlined text-xl">sports_esports</span>
             <span>Play</span>
           </Link>
-          <button
-            onClick={() => setShowLeaderboard(true)}
-            className="px-5 py-2.5 bg-[#262628] hover:bg-[#4a4a4d] text-[#e3e3e3] font-medium rounded-full transition-all flex items-center gap-2"
-          >
-            <span className="material-symbols-outlined text-xl">leaderboard</span>
-            <span>Leaderboard</span>
-          </button>
+          {user && (
+            <button
+              onClick={() => setShowLeaderboard(true)}
+              className="px-5 py-2.5 bg-[#262628] hover:bg-[#4a4a4d] text-[#e3e3e3] font-medium rounded-full transition-all flex items-center gap-2"
+            >
+              <span className="material-symbols-outlined text-xl">leaderboard</span>
+              <span>Leaderboard</span>
+            </button>
+          )}
           <SignInButton />
         </div>
 
