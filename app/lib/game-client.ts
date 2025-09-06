@@ -89,6 +89,51 @@ export async function getRandomUnplayedGame(userId: string): Promise<GameRound |
   }
 }
 
+export async function getSpecificGame(gameId: string, userId: string): Promise<GameRound | null> {
+  try {
+    const gameRef = doc(db, 'gameRounds', gameId)
+    const gameSnap = await getDoc(gameRef)
+    
+    if (!gameSnap.exists()) {
+      return null
+    }
+    
+    const gameData = gameSnap.data()
+    
+    // Check if game is public and user is not the creator
+    if (!gameData.isPublic || gameData.creatorId === userId) {
+      return null
+    }
+    
+    return {
+      id: gameSnap.id,
+      ...gameData
+    } as GameRound
+  } catch (error) {
+    console.error('Error fetching specific game:', error)
+    throw new Error('Failed to fetch game')
+  }
+}
+
+export async function getUserGamePlay(gameId: string, userId: string): Promise<GamePlay | null> {
+  try {
+    const gamePlayId = `${gameId}_${userId}`
+    const gamePlayRef = doc(db, 'gamePlays', gamePlayId)
+    const gamePlaySnap = await getDoc(gamePlayRef)
+    
+    if (!gamePlaySnap.exists()) {
+      return null
+    }
+    
+    return gamePlaySnap.data() as GamePlay
+  } catch (error) {
+    // If the document doesn't exist or there are permission issues, 
+    // it likely means the user hasn't played this game yet
+    console.log('Game play record not found (user likely hasn\'t played this game):', error)
+    return null
+  }
+}
+
 export async function verifyAnswerAndRecordPlay(
   gameId: string,
   userId: string,

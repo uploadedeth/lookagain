@@ -505,11 +505,17 @@ const HomePage: React.FC = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-                {communityGames.map((game) => (
+                {communityGames.map((game) => {
+                  const isCreator = user?.uid === game.creatorId;
+                  return (
                   <div
                     key={game.id}
-                    className="bg-[#262628] rounded-xl overflow-hidden hover:bg-[#2d2d30] transition-all cursor-pointer group"
-                    onClick={() => router.push('/play')}
+                    className={`bg-[#262628] rounded-xl overflow-hidden transition-all group ${
+                      isCreator 
+                        ? 'opacity-75' 
+                        : 'hover:bg-[#2d2d30] cursor-pointer'
+                    }`}
+                    onClick={isCreator ? undefined : () => router.push(`/play/${game.id}`)}
                   >
                     <div className="aspect-square relative overflow-hidden">
                       <ImageWithLoader
@@ -523,15 +529,22 @@ const HomePage: React.FC = () => {
                         {game.prompt}
                       </h3>
                       <div className="flex items-center justify-between text-xs text-[#9aa0a6]">
-                        <span>by {game.creatorName}</span>
+                        <span>by {isCreator ? 'You' : game.creatorName}</span>
                         <div className="flex items-center gap-1">
                           <span className="material-symbols-outlined text-sm">play_arrow</span>
                           <span>{game.playCount}</span>
                         </div>
                       </div>
+                      {isCreator && (
+                        <div className="mt-2 text-xs text-[#6e7681] flex items-center gap-1">
+                          <span className="material-symbols-outlined text-sm">info</span>
+                          <span>Your creation</span>
+                        </div>
+                      )}
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
