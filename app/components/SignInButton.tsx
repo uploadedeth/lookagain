@@ -5,8 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthProvider';
 import Spinner from './Spinner';
 
-const 
-SignInButton: React.FC = () => {
+interface SignInButtonProps {
+  variant?: 'default' | 'modal';
+}
+
+const SignInButton: React.FC<SignInButtonProps> = ({ variant = 'default' }) => {
   const router = useRouter();
   const { user, userProfile, loading, signInWithGoogle, signOut } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -99,10 +102,18 @@ SignInButton: React.FC = () => {
     );
   }
 
+  // Get button styles based on variant
+  const getButtonStyles = () => {
+    if (variant === 'modal') {
+      return "flex items-center gap-2 px-5 py-2.5 bg-[#1c1c1d] hover:bg-[#1c1c1d]/80 text-[#e3e3e3] font-medium rounded-full transition-all text-sm md:text-base justify-center whitespace-nowrap";
+    }
+    return "flex items-center gap-2 px-5 py-2.5 bg-[#262628] hover:bg-[#262628]/50 text-[#e3e3e3] font-medium rounded-full transition-all text-sm md:text-base justify-center whitespace-nowrap";
+  };
+
   return (
     <button
       onClick={signInWithGoogle}
-      className="flex items-center gap-2 px-5 py-2.5 bg-[#262628] hover:bg-[#262628]/50 text-[#e3e3e3] font-medium rounded-full transition-all text-sm md:text-base justify-center whitespace-nowrap"
+      className={getButtonStyles()}
     >
       <svg className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" viewBox="0 0 24 24">
         <path

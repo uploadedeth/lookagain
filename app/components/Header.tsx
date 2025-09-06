@@ -6,14 +6,18 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import SignInButton from './SignInButton';
 import Leaderboard from './Leaderboard';
+import AuthModal from './AuthModal';
 import { useAuth } from './AuthProvider';
 
 
 const Header: React.FC = () => {
+  const router = useRouter();
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const { user } = useAuth();
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +42,15 @@ const Header: React.FC = () => {
       document.body.style.overflow = 'unset';
     };
   }, [showMobileMenu]);
+
+  // Handle play button click with authentication check
+  const handlePlayClick = () => {
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
+    router.push('/play');
+  };
 
   return (
     <>
@@ -69,13 +82,13 @@ const Header: React.FC = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-4">
-          <Link
-            href="/play"
+          <button
+            onClick={handlePlayClick}
             className="px-5 py-2.5 bg-[#fbbf24] hover:bg-[#f59e0b] text-[#1c1c1d] font-medium rounded-full transition-all flex items-center gap-2"
           >
             <span className="material-symbols-outlined text-xl">sports_esports</span>
             <span>Play</span>
-          </Link>
+          </button>
           {user && (
             <button
               onClick={() => setShowLeaderboard(true)}
@@ -105,14 +118,16 @@ const Header: React.FC = () => {
         >
           <div className="p-6 pt-20">
             <nav className="space-y-4">
-              <Link
-                href="/play"
-                onClick={() => setShowMobileMenu(false)}
+              <button
+                onClick={() => {
+                  setShowMobileMenu(false);
+                  handlePlayClick();
+                }}
                 className="w-full px-6 py-4 bg-[#fbbf24] hover:bg-[#f59e0b] text-[#1c1c1d] font-medium rounded-2xl transition-all flex items-center gap-3 text-lg"
               >
                 <span className="material-symbols-outlined text-2xl">sports_esports</span>
                 <span>Play Games</span>
-              </Link>
+              </button>
               <button
                 onClick={() => {
                   setShowLeaderboard(true);
@@ -138,6 +153,14 @@ const Header: React.FC = () => {
     )}
 
     {showLeaderboard && <Leaderboard onClose={() => setShowLeaderboard(false)} />}
+    
+    {/* Auth Modal */}
+    <AuthModal
+      isOpen={showAuthModal}
+      onClose={() => setShowAuthModal(false)}
+      title="Sign In to Play"
+      message="You need to sign in to play community games and track your progress."
+    />
     </>
   );
 };

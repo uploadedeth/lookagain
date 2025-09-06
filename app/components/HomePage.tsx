@@ -9,6 +9,7 @@ import Spinner from './Spinner';
 import QuotaDisplay from './QuotaDisplay';
 import ImageWithLoader from './ImageWithLoader';
 import TypewriterText from './TypewriterText';
+import AuthModal from './AuthModal';
 
 // GameRound interface
 interface GameRound {
@@ -84,6 +85,9 @@ const HomePage: React.FC = () => {
   const [communityGames, setCommunityGames] = useState<GameRound[]>([]);
   const [loadingCommunityGames, setLoadingCommunityGames] = useState(true);
   const [communityGamesError, setCommunityGamesError] = useState<string | null>(null);
+  
+  // Auth modal state
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   // Fetch community games
   const fetchCommunityGames = async () => {
@@ -110,6 +114,24 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     fetchCommunityGames();
   }, []);
+
+  // Handle game click with authentication check
+  const handleGameClick = (gameId: string) => {
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
+    router.push(`/play/${gameId}`);
+  };
+
+  // Handle prompt input focus with authentication check
+  const handlePromptFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (!user) {
+      e.target.blur(); // Remove focus from input
+      setShowAuthModal(true);
+      return;
+    }
+  };
 
   // Fetch user quota on mount and when user changes
   useEffect(() => {
@@ -231,6 +253,10 @@ const HomePage: React.FC = () => {
   };
 
   const handlePlayClick = () => {
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
     router.push('/play');
   };
 
@@ -362,6 +388,7 @@ const HomePage: React.FC = () => {
                   type="text"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
+                  onFocus={handlePromptFocus}
                   placeholder="Enter a scene description"
                   className="w-full px-4 sm:px-6 pt-4 sm:pt-4 pb-12 sm:pb-10 pr-12 sm:pr-14 bg-[#1c1c1d] border border-[#3c3c3f] rounded-2xl sm:rounded-3xl text-[#e3e3e3] text-base sm:text-lg placeholder-[#6e7681] focus:outline-none focus:border-[#fbbf24] transition-colors min-h-[56px] sm:min-h-[60px]"
                   disabled={isGenerating}
@@ -515,7 +542,7 @@ const HomePage: React.FC = () => {
                         ? 'opacity-75' 
                         : 'hover:bg-[#2d2d30] cursor-pointer'
                     }`}
-                    onClick={isCreator ? undefined : () => router.push(`/play/${game.id}`)}
+                    onClick={isCreator ? undefined : () => handleGameClick(game.id)}
                   >
                     <div className="aspect-square relative overflow-hidden">
                       <ImageWithLoader
@@ -687,6 +714,14 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        title="Sign In to Create Games"
+        message="You need to sign in to create your own visual puzzles and play community games."
+      />
       </div>
     </div>
   );

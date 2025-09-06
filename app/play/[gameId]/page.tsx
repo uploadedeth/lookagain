@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '../../components/AuthProvider';
 import Spinner from '../../components/Spinner';
 import ImageWithLoader from '../../components/ImageWithLoader';
+import AuthModal from '../../components/AuthModal';
 
 interface GameRound {
   id: string;
@@ -41,12 +42,18 @@ const SpecificGamePage: React.FC = () => {
   const [pointsEarned, setPointsEarned] = useState(0);
   const [actualCount, setActualCount] = useState<number | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const gameId = params?.gameId as string;
   const guessOptions = ['3-5 differences', '6-8 differences', '9+ differences'];
 
   useEffect(() => {
-    if (gameId && user) {
+    if (gameId) {
+      if (!user) {
+        setShowAuthModal(true);
+        setLoading(false);
+        return;
+      }
       loadSpecificGame();
     }
   }, [gameId, user]);
@@ -288,6 +295,17 @@ const SpecificGamePage: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {/* Auth Modal */}
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => {
+            setShowAuthModal(false);
+            router.push('/');
+          }}
+          title="Sign In Required"
+          message="You need to sign in to play this game and track your progress."
+        />
       </div>
   );
 };
