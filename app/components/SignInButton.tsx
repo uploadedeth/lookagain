@@ -27,7 +27,7 @@ const SignInButton: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="w-40 h-10 bg-[#262628] rounded-full animate-pulse" />
+      <div className="w-[160px] h-10 bg-[#262628] rounded-full animate-pulse" />
     );
   }
 
@@ -36,7 +36,7 @@ const SignInButton: React.FC = () => {
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setShowDropdown(!showDropdown)}
-          className="flex items-center gap-2 px-2 md:px-3 py-2 hover:bg-[#262628] rounded-full transition-all"
+          className="flex items-center gap-2 px-2 md:px-3 py-2 hover:bg-[#262628] rounded-full transition-all min-w-[120px] justify-start"
         >
           {userProfile.photoURL ? (
             <img 
@@ -101,7 +101,7 @@ const SignInButton: React.FC = () => {
   return (
     <button
       onClick={signInWithGoogle}
-      className="flex items-center gap-2 px-3 md:px-5 py-2.5 bg-[#262628] hover:bg-[#262628]/50 text-[#e3e3e3] font-medium rounded-full transition-all text-sm md:text-base"
+      className="flex items-center gap-2 px-3 md:px-5 py-2.5 bg-[#262628] hover:bg-[#262628]/50 text-[#e3e3e3] font-medium rounded-full transition-all text-sm md:text-base w-[160px] justify-center"
     >
       <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24">
         <path
