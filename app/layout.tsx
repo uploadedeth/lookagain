@@ -6,6 +6,9 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Look Again - AI Spot the Difference Game',
   description: 'Create and play AI-generated spot-the-difference puzzles',
+  icons: {
+    icon: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({
