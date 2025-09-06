@@ -4,10 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthProvider';
 import { generateInitialImage, planDifferences, generateModifiedImage } from '../actions/gemini';
-import { createGameRound } from '../actions/game';
+import { createGameRound, checkUserQuota, QuotaStatus } from '../lib/game-creation-client';
 import Spinner from './Spinner';
-import { checkUserQuota } from '../actions/quota';
-import { QuotaStatus } from '../lib/quotas';
 import QuotaDisplay from './QuotaDisplay';
 import ImageWithLoader from './ImageWithLoader';
 import TypewriterText from './TypewriterText';
@@ -137,7 +135,6 @@ const HomePage: React.FC = () => {
       setLoadingMessage('Creating the base scene...');
       const initialImageUrl = await generateInitialImage(prompt);
       setOriginalImage(initialImageUrl);
-      const originalImageFile = dataURLtoFile(initialImageUrl, 'original.png');
 
       setLoadingMessage(`Planning ${numDifferences} clever differences...`);
       const plannedDifferences = await planDifferences(prompt, numDifferences);
@@ -171,7 +168,7 @@ const HomePage: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       setLoadingMessage('Finalizing your puzzle...');
-      const finalModifiedImageUrl = await generateModifiedImage(originalImageFile, plannedDifferences);
+      const finalModifiedImageUrl = await generateModifiedImage(initialImageUrl, plannedDifferences);
       setModifiedImage(finalModifiedImageUrl);
 
       // Show the generated game
@@ -297,7 +294,7 @@ const HomePage: React.FC = () => {
         </div>
       ) : !isGenerating ? (
         <div className="w-full text-center mb-12">
-          <h1 className="text-4xl font-light text-[#e3e3e3] mb-2">
+          <h1 className="text-4xl font-bold text-[#e3e3e3] mb-2">
             <span className="bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] bg-clip-text text-transparent">Hello</span>{authLoading ? (
               <span className="inline-block">
                 , <span className="inline-block w-32 h-10 bg-[#262628] rounded-lg animate-pulse align-middle"></span>

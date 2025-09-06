@@ -6,8 +6,7 @@ import { useAuth } from './AuthProvider';
 import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import ImageWithLoader from './ImageWithLoader';
-import { checkUserQuota } from '../actions/quota';
-import { QuotaStatus } from '../lib/quotas';
+import { checkUserQuota, QuotaStatus } from '../lib/game-creation-client';
 import QuotaDisplay from './QuotaDisplay';
 
 interface GameRound {
@@ -148,7 +147,7 @@ const ProfilePage: React.FC = () => {
             <h1 className="text-4xl font-light text-[#e3e3e3] mb-2">{userProfile.displayName}</h1>
             <p className="text-[#9aa0a6]">{userProfile.email}</p>
             <p className="text-[#9aa0a6] text-sm mt-2">
-              Member since {userProfile.createdAt && new Date(userProfile.createdAt.seconds * 1000).toLocaleDateString('en-US', {
+              Member since {userProfile.createdAt && new Date((userProfile.createdAt as any).seconds ? (userProfile.createdAt as any).seconds * 1000 : userProfile.createdAt).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'

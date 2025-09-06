@@ -6,17 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "firebase deploy --only functions,hosting"
   },
   "dependencies": {
     "@coinbase/onchainkit": "^0.38.19",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@google/genai": "^1.10.0",
-    "@google/generative-ai": "^0.24.1",
     "@mui/icons-material": "^7.3.2",
     "@mui/material": "^7.3.2",
     "firebase": "^12.2.1",
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^6.0.1",
     "next": "^15.5.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.0",

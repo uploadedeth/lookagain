@@ -34,7 +34,7 @@ const Header: React.FC = () => {
           </Link>
           <button
             onClick={() => setShowLeaderboard(true)}
-            className="px-5 py-2.5 bg-[#3c3c3f] hover:bg-[#4a4a4d] text-[#e3e3e3] font-medium rounded-full transition-all flex items-center gap-2"
+            className="px-5 py-2.5 bg-[#262628] hover:bg-[#4a4a4d] text-[#e3e3e3] font-medium rounded-full transition-all flex items-center gap-2"
           >
             <span className="material-symbols-outlined text-xl">leaderboard</span>
             <span>Leaderboard</span>

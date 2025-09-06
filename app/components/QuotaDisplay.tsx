@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import { QuotaStatus } from '../lib/quotas';
+import { QuotaStatus } from '../lib/game-creation-client';
 
 interface QuotaDisplayProps {
   quota: QuotaStatus;
@@ -16,7 +16,8 @@ const QuotaDisplay: React.FC<QuotaDisplayProps> = ({
   showProgressBar = true,
   className = ''
 }) => {
-  const isNearLimit = quota.percentage >= 80;
+  const percentage = quota.limit > 0 ? Math.round((quota.used / quota.limit) * 100) : 0;
+  const isNearLimit = percentage >= 80;
   const isAtLimit = quota.remaining === 0;
   
   return (
@@ -36,7 +37,7 @@ const QuotaDisplay: React.FC<QuotaDisplayProps> = ({
             className={`h-full rounded-full transition-all duration-300 ${
               isAtLimit ? 'bg-red-500' : isNearLimit ? 'bg-yellow-500' : 'bg-[#fbbf24]'
             }`}
-            style={{ width: `${quota.percentage}%` }}
+            style={{ width: `${percentage}%` }}
           />
         </div>
       )}

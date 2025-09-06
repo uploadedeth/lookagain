@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './AuthProvider';
-import { getRandomUnplayedGame, verifyAnswerAndRecordPlay } from '../actions/play';
+import { getRandomUnplayedGame, verifyAnswerAndRecordPlay } from '../lib/game-client';
 import Spinner from './Spinner';
 import ImageWithLoader from './ImageWithLoader';
 
