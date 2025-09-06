@@ -1,20 +1,82 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Look Again
 
-# Run and deploy your AI Studio app
+An AI-powered spot-the-difference game where users can create and play custom puzzles generated using Google's Gemini AI.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1KpZMeE_SQ0qAlVA7FBZVBUYtbxCZ_YBl
+- 🎨 **AI-Generated Puzzles**: Create unique spot-the-difference games using AI
+- 🎮 **Community Games**: Play puzzles created by other users
+- 🏆 **Leaderboard**: Compete for the top score
+- 👤 **User Profiles**: Track your stats and created puzzles
+- 🎯 **Quota System**: Fair usage limits per user
+- 🔐 **Google Authentication**: Secure sign-in with Google
 
-## Run Locally
+## Tech Stack
 
-**Prerequisites:**  Node.js
+- **Frontend**: React + TypeScript + Vite
+- **Styling**: Tailwind CSS
+- **Backend**: Firebase (Firestore, Storage, Authentication)
+- **AI**: Google Gemini API
+- **Icons**: Google Material Symbols
 
+## Getting Started
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Prerequisites
+
+- Node.js (v20 or higher)
+- npm or yarn
+- Firebase project
+- Google Gemini API key
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/lookagain.git
+cd lookagain
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Create a `.env.local` file with your configuration:
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_GEMINI_API_KEY=your_gemini_api_key
+VITE_APP_GAME_QUOTA=1000
+```
+
+4. Run the development server:
+```bash
+npm run dev
+```
+
+## Firebase Setup
+
+1. Create a Firebase project
+2. Enable Authentication (Google provider)
+3. Create a Firestore database
+4. Enable Storage
+5. Add your domain to authorized domains in Authentication settings
+
+## Game Rules
+
+- Players guess the number of differences between two AI-generated images
+- Correct guesses earn 10 points
+- Each user can create up to 5 games (configurable)
+- All games are public and can be played by anyone
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
