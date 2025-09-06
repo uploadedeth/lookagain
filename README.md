@@ -13,7 +13,7 @@ An AI-powered spot-the-difference game where users can create and play custom pu
 
 ## Tech Stack
 
-- **Frontend**: React + TypeScript + Vite
+- **Frontend**: Next.js + TypeScript (App Router)
 - **Styling**: Tailwind CSS
 - **Backend**: Firebase (Firestore, Storage, Authentication)
 - **AI**: Google Gemini API
@@ -43,20 +43,25 @@ npm install
 
 3. Create a `.env.local` file with your configuration:
 ```env
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-VITE_GEMINI_API_KEY=your_gemini_api_key
-VITE_APP_GAME_QUOTA=1000
+# Public environment variables (exposed to client)
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+
+# Server-side only environment variables
+GEMINI_API_KEY=your_gemini_api_key
+APP_GAME_QUOTA=1000
 ```
 
 4. Run the development server:
 ```bash
 npm run dev
 ```
+
+The app will be available at `http://localhost:3000`
 
 ## Firebase Setup
 

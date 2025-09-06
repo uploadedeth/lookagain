@@ -1,0 +1,112 @@
+{
+  "node": {
+    "40580985583455a9c894451da0029c2acb98f8a144": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgemini.ts%22%2C%5B%7B%22id%22%3A%2240580985583455a9c894451da0029c2acb98f8a144%22%2C%22exportedName%22%3A%22generateInitialImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260d5ecea94620a4afb1bbfb62cb9c80fce22691222%22%2C%22exportedName%22%3A%22planDifferences%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260ff29bacd5df24ed899dc163e30543b52191e9997%22%2C%22exportedName%22%3A%22generateModifiedImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgame.ts%22%2C%5B%7B%22id%22%3A%227f2284dd4df4cb5ff278e3f47d9df40e831f74c137%22%2C%22exportedName%22%3A%22createGameRound%22%2C%22filename%22%3A%22app%2Factions%2Fgame.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fquota.ts%22%2C%5B%7B%22id%22%3A%2200cd72ce8d6819fa75146e406f653191927a5986d4%22%2C%22exportedName%22%3A%22checkAppQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240636def4bc1634ee26189171b076a27f5c0b3811e%22%2C%22exportedName%22%3A%22checkUserQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240c2782795a083bd5c67cf4e047c3b7bcc92e20cd1%22%2C%22exportedName%22%3A%22verifyAndConsumeQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "filename": "app/actions/gemini.ts",
+      "exportedName": "generateInitialImage"
+    },
+    "60d5ecea94620a4afb1bbfb62cb9c80fce22691222": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgemini.ts%22%2C%5B%7B%22id%22%3A%2240580985583455a9c894451da0029c2acb98f8a144%22%2C%22exportedName%22%3A%22generateInitialImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260d5ecea94620a4afb1bbfb62cb9c80fce22691222%22%2C%22exportedName%22%3A%22planDifferences%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260ff29bacd5df24ed899dc163e30543b52191e9997%22%2C%22exportedName%22%3A%22generateModifiedImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgame.ts%22%2C%5B%7B%22id%22%3A%227f2284dd4df4cb5ff278e3f47d9df40e831f74c137%22%2C%22exportedName%22%3A%22createGameRound%22%2C%22filename%22%3A%22app%2Factions%2Fgame.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fquota.ts%22%2C%5B%7B%22id%22%3A%2200cd72ce8d6819fa75146e406f653191927a5986d4%22%2C%22exportedName%22%3A%22checkAppQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240636def4bc1634ee26189171b076a27f5c0b3811e%22%2C%22exportedName%22%3A%22checkUserQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240c2782795a083bd5c67cf4e047c3b7bcc92e20cd1%22%2C%22exportedName%22%3A%22verifyAndConsumeQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "filename": "app/actions/gemini.ts",
+      "exportedName": "planDifferences"
+    },
+    "60ff29bacd5df24ed899dc163e30543b52191e9997": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgemini.ts%22%2C%5B%7B%22id%22%3A%2240580985583455a9c894451da0029c2acb98f8a144%22%2C%22exportedName%22%3A%22generateInitialImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260d5ecea94620a4afb1bbfb62cb9c80fce22691222%22%2C%22exportedName%22%3A%22planDifferences%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260ff29bacd5df24ed899dc163e30543b52191e9997%22%2C%22exportedName%22%3A%22generateModifiedImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgame.ts%22%2C%5B%7B%22id%22%3A%227f2284dd4df4cb5ff278e3f47d9df40e831f74c137%22%2C%22exportedName%22%3A%22createGameRound%22%2C%22filename%22%3A%22app%2Factions%2Fgame.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fquota.ts%22%2C%5B%7B%22id%22%3A%2200cd72ce8d6819fa75146e406f653191927a5986d4%22%2C%22exportedName%22%3A%22checkAppQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240636def4bc1634ee26189171b076a27f5c0b3811e%22%2C%22exportedName%22%3A%22checkUserQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240c2782795a083bd5c67cf4e047c3b7bcc92e20cd1%22%2C%22exportedName%22%3A%22verifyAndConsumeQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "filename": "app/actions/gemini.ts",
+      "exportedName": "generateModifiedImage"
+    },
+    "7f2284dd4df4cb5ff278e3f47d9df40e831f74c137": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgemini.ts%22%2C%5B%7B%22id%22%3A%2240580985583455a9c894451da0029c2acb98f8a144%22%2C%22exportedName%22%3A%22generateInitialImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260d5ecea94620a4afb1bbfb62cb9c80fce22691222%22%2C%22exportedName%22%3A%22planDifferences%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260ff29bacd5df24ed899dc163e30543b52191e9997%22%2C%22exportedName%22%3A%22generateModifiedImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgame.ts%22%2C%5B%7B%22id%22%3A%227f2284dd4df4cb5ff278e3f47d9df40e831f74c137%22%2C%22exportedName%22%3A%22createGameRound%22%2C%22filename%22%3A%22app%2Factions%2Fgame.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fquota.ts%22%2C%5B%7B%22id%22%3A%2200cd72ce8d6819fa75146e406f653191927a5986d4%22%2C%22exportedName%22%3A%22checkAppQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240636def4bc1634ee26189171b076a27f5c0b3811e%22%2C%22exportedName%22%3A%22checkUserQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240c2782795a083bd5c67cf4e047c3b7bcc92e20cd1%22%2C%22exportedName%22%3A%22verifyAndConsumeQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "filename": "app/actions/game.ts",
+      "exportedName": "createGameRound"
+    },
+    "00cd72ce8d6819fa75146e406f653191927a5986d4": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgemini.ts%22%2C%5B%7B%22id%22%3A%2240580985583455a9c894451da0029c2acb98f8a144%22%2C%22exportedName%22%3A%22generateInitialImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260d5ecea94620a4afb1bbfb62cb9c80fce22691222%22%2C%22exportedName%22%3A%22planDifferences%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260ff29bacd5df24ed899dc163e30543b52191e9997%22%2C%22exportedName%22%3A%22generateModifiedImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgame.ts%22%2C%5B%7B%22id%22%3A%227f2284dd4df4cb5ff278e3f47d9df40e831f74c137%22%2C%22exportedName%22%3A%22createGameRound%22%2C%22filename%22%3A%22app%2Factions%2Fgame.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fquota.ts%22%2C%5B%7B%22id%22%3A%2200cd72ce8d6819fa75146e406f653191927a5986d4%22%2C%22exportedName%22%3A%22checkAppQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240636def4bc1634ee26189171b076a27f5c0b3811e%22%2C%22exportedName%22%3A%22checkUserQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240c2782795a083bd5c67cf4e047c3b7bcc92e20cd1%22%2C%22exportedName%22%3A%22verifyAndConsumeQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/profile/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fquota.ts%22%2C%5B%7B%22id%22%3A%2200cd72ce8d6819fa75146e406f653191927a5986d4%22%2C%22exportedName%22%3A%22checkAppQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240636def4bc1634ee26189171b076a27f5c0b3811e%22%2C%22exportedName%22%3A%22checkUserQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240c2782795a083bd5c67cf4e047c3b7bcc92e20cd1%22%2C%22exportedName%22%3A%22verifyAndConsumeQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/profile/page": "action-browser"
+      },
+      "filename": "app/actions/quota.ts",
+      "exportedName": "checkAppQuota"
+    },
+    "40636def4bc1634ee26189171b076a27f5c0b3811e": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgemini.ts%22%2C%5B%7B%22id%22%3A%2240580985583455a9c894451da0029c2acb98f8a144%22%2C%22exportedName%22%3A%22generateInitialImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260d5ecea94620a4afb1bbfb62cb9c80fce22691222%22%2C%22exportedName%22%3A%22planDifferences%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260ff29bacd5df24ed899dc163e30543b52191e9997%22%2C%22exportedName%22%3A%22generateModifiedImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgame.ts%22%2C%5B%7B%22id%22%3A%227f2284dd4df4cb5ff278e3f47d9df40e831f74c137%22%2C%22exportedName%22%3A%22createGameRound%22%2C%22filename%22%3A%22app%2Factions%2Fgame.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fquota.ts%22%2C%5B%7B%22id%22%3A%2200cd72ce8d6819fa75146e406f653191927a5986d4%22%2C%22exportedName%22%3A%22checkAppQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240636def4bc1634ee26189171b076a27f5c0b3811e%22%2C%22exportedName%22%3A%22checkUserQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240c2782795a083bd5c67cf4e047c3b7bcc92e20cd1%22%2C%22exportedName%22%3A%22verifyAndConsumeQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/profile/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fquota.ts%22%2C%5B%7B%22id%22%3A%2200cd72ce8d6819fa75146e406f653191927a5986d4%22%2C%22exportedName%22%3A%22checkAppQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240636def4bc1634ee26189171b076a27f5c0b3811e%22%2C%22exportedName%22%3A%22checkUserQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240c2782795a083bd5c67cf4e047c3b7bcc92e20cd1%22%2C%22exportedName%22%3A%22verifyAndConsumeQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/profile/page": "action-browser"
+      },
+      "filename": "app/actions/quota.ts",
+      "exportedName": "checkUserQuota"
+    },
+    "40c2782795a083bd5c67cf4e047c3b7bcc92e20cd1": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgemini.ts%22%2C%5B%7B%22id%22%3A%2240580985583455a9c894451da0029c2acb98f8a144%22%2C%22exportedName%22%3A%22generateInitialImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260d5ecea94620a4afb1bbfb62cb9c80fce22691222%22%2C%22exportedName%22%3A%22planDifferences%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%2C%7B%22id%22%3A%2260ff29bacd5df24ed899dc163e30543b52191e9997%22%2C%22exportedName%22%3A%22generateModifiedImage%22%2C%22filename%22%3A%22app%2Factions%2Fgemini.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fgame.ts%22%2C%5B%7B%22id%22%3A%227f2284dd4df4cb5ff278e3f47d9df40e831f74c137%22%2C%22exportedName%22%3A%22createGameRound%22%2C%22filename%22%3A%22app%2Factions%2Fgame.ts%22%7D%5D%5D%2C%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fquota.ts%22%2C%5B%7B%22id%22%3A%2200cd72ce8d6819fa75146e406f653191927a5986d4%22%2C%22exportedName%22%3A%22checkAppQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240636def4bc1634ee26189171b076a27f5c0b3811e%22%2C%22exportedName%22%3A%22checkUserQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240c2782795a083bd5c67cf4e047c3b7bcc92e20cd1%22%2C%22exportedName%22%3A%22verifyAndConsumeQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/profile/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fcristianberbecaru%2FProjects%2FMNC%2FDevelop%2Fvibe-coding%2Flookagain%2Fapp%2Factions%2Fquota.ts%22%2C%5B%7B%22id%22%3A%2200cd72ce8d6819fa75146e406f653191927a5986d4%22%2C%22exportedName%22%3A%22checkAppQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240636def4bc1634ee26189171b076a27f5c0b3811e%22%2C%22exportedName%22%3A%22checkUserQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%2C%7B%22id%22%3A%2240c2782795a083bd5c67cf4e047c3b7bcc92e20cd1%22%2C%22exportedName%22%3A%22verifyAndConsumeQuota%22%2C%22filename%22%3A%22app%2Factions%2Fquota.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/profile/page": "action-browser"
+      },
+      "filename": "app/actions/quota.ts",
+      "exportedName": "verifyAndConsumeQuota"
+    }
+  },
+  "edge": {},
+  "encryptionKey": "9u5jcpY7t1rAWk1SAvZASbD3XzD7WBCPADv2jKRuH3Y="
+}
