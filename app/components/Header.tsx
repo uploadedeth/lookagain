@@ -43,9 +43,9 @@ const Header: React.FC = () => {
     <>
     <header className="w-full py-3 px-4 md:py-5 md:px-8 sticky top-0 z-50 bg-[#1c1c1d]">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
-        {/* Mobile Menu Button / Sign In Button (if not logged in) */}
-        <div className="flex items-center">
-          {user ? (
+        {/* Left side - Mobile Menu Button (if logged in) + Logo */}
+        <div className="flex items-center flex-1">
+          {user && (
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
               className="md:hidden p-2 hover:bg-[#262628] rounded-lg transition-all mr-3"
@@ -55,10 +55,6 @@ const Header: React.FC = () => {
                 {showMobileMenu ? 'close' : 'menu'}
               </span>
             </button>
-          ) : (
-            <div className="md:hidden mr-3">
-              <SignInButton />
-            </div>
           )}
           
           {/* Logo */}
@@ -90,12 +86,10 @@ const Header: React.FC = () => {
           <SignInButton />
         </div>
 
-        {/* Mobile Profile Button (if logged in) */}
-        {user && (
-          <div className="md:hidden">
-            <SignInButton />
-          </div>
-        )}
+        {/* Mobile Sign In / Profile Button (always on right) */}
+        <div className="md:hidden flex justify-end">
+          <SignInButton />
+        </div>
       </div>
     </header>
 
