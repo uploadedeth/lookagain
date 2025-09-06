@@ -25,8 +25,8 @@ const ImageWithLoader: React.FC<ImageWithLoaderProps> = ({ src, alt, className =
       {/* Loading skeleton */}
       {isLoading && (
         <div className="absolute inset-0 rounded-xl overflow-hidden">
-          <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 animate-pulse">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-700 to-transparent animate-shimmer"></div>
+          <div className="w-full h-full bg-[#3c3c3f] animate-pulse">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#4a4a4d] to-transparent animate-shimmer"></div>
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
             <Spinner size="md" />

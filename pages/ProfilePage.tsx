@@ -136,7 +136,7 @@ const ProfilePage: React.FC = () => {
 
       {/* Stats Section */}
       <div className="mb-16">
-        <h2 className="text-6xl font-light text-[#9aa0a6] mb-12">My Stats</h2>
+        <h2 className="text-2xl font-light text-[#9aa0a6] mb-8">My Stats</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="text-center">
             <p className="text-5xl font-medium text-[#e3e3e3] mb-2">{userProfile.score || 0}</p>
@@ -155,7 +155,7 @@ const ProfilePage: React.FC = () => {
 
       {/* My Puzzles Section */}
       <div className="mb-16">
-        <h2 className="text-6xl font-light text-[#9aa0a6] mb-12">My Puzzles</h2>
+        <h2 className="text-2xl font-light text-[#9aa0a6] mb-8">My Puzzles</h2>
         
         {puzzlesLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -223,10 +223,10 @@ const ProfilePage: React.FC = () => {
                   </button>
                   
                   {expandedPuzzle === puzzle.id && (
-                    <div className="mt-3 px-4 py-3 bg-[#1c1c1d] rounded-xl animate-fade-in">
+                    <div className="mt-3 px-4 py-3 bg-[#1c1c1d] rounded-xl">
                       <ul className="space-y-1">
                         {puzzle.differences.map((diff, index) => (
-                          <li key={index} className="text-sm text-[#9aa0a6] flex items-start">
+                          <li key={`${puzzle.id}-diff-${index}`} className="text-sm text-[#9aa0a6] flex items-start">
                             <span className="text-[#fbbf24] mr-2">{index + 1}.</span>
                             {diff}
                           </li>

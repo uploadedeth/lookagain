@@ -103,30 +103,32 @@ const PlayGame: React.FC<PlayGameProps> = ({ onBackToMenu }) => {
 
   if (loading && !currentGame) {
     return (
-      <div className="text-center animate-fade-in flex flex-col items-center gap-6">
-        <Spinner size="md" />
-        <p className="text-xl text-gray-300">Finding a puzzle for you...</p>
+      <div className="fixed inset-0 flex items-center justify-center bg-[#1c1c1d]">
+        <div className="text-center animate-fade-in flex flex-col items-center gap-6">
+          <div className="text-6xl animate-bounce">🍌</div>
+          <p className="text-xl text-gray-300">Finding a puzzle for you...</p>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-center animate-fade-in bg-red-500/10 border border-red-500/20 p-8 rounded-lg max-w-2xl mx-auto flex flex-col items-center gap-4">
-        <h2 className="text-2xl font-bold text-red-300">Oops!</h2>
-        <p className="text-md text-red-400">{error}</p>
+      <div className="text-center animate-fade-in bg-[#262628] border border-[#3c3c3f] p-8 rounded-lg max-w-2xl mx-auto flex flex-col items-center gap-4">
+        <h2 className="text-2xl font-bold text-[#e3e3e3]">Oops!</h2>
+        <p className="text-md text-[#9aa0a6]">{error}</p>
         <div className="flex gap-3">
           <button
             onClick={loadNewGame}
-            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg text-md transition-colors"
+            className="bg-[#fbbf24] hover:bg-[#f59e0b] text-[#1c1c1d] font-bold py-2 px-6 rounded-lg text-md transition-colors"
           >
             Try Again
           </button>
           <button
             onClick={onBackToMenu}
-            className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg text-md transition-colors"
+            className="bg-[#3c3c3f] hover:bg-[#4a4a4d] text-[#e3e3e3] font-bold py-2 px-6 rounded-lg text-md transition-colors"
           >
-            Back to Menu
+            Back to Homepage
           </button>
         </div>
       </div>
@@ -140,32 +142,32 @@ const PlayGame: React.FC<PlayGameProps> = ({ onBackToMenu }) => {
   return (
     <div className="w-full max-w-7xl mx-auto flex flex-col items-center gap-6 animate-fade-in">
       <div className="text-center">
-        <h2 className="text-3xl font-bold mb-2">Spot the Differences!</h2>
-        <p className="text-gray-400">Created by: {currentGame.creatorName}</p>
+        <h2 className="text-3xl font-bold mb-2 text-[#e3e3e3]">Spot the Differences!</h2>
+        <p className="text-[#9aa0a6]">Created by: {currentGame.creatorName}</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full min-h-[400px]">
         <ImageWithLoader
           src={currentGame.originalImageUrl} 
           alt="Original Scene" 
-          className="w-full h-auto object-contain rounded-xl shadow-2xl bg-black/20"
+          className="w-full h-full object-contain rounded-xl shadow-2xl bg-black/20"
         />
         <ImageWithLoader
           src={currentGame.modifiedImageUrl} 
           alt="Modified Scene" 
-          className="w-full h-auto object-contain rounded-xl shadow-2xl bg-black/20"
+          className="w-full h-full object-contain rounded-xl shadow-2xl bg-black/20"
         />
       </div>
 
-      <div className="w-full max-w-2xl bg-gray-800/80 border border-gray-700/80 rounded-lg p-6 mt-4 flex flex-col items-center gap-4 backdrop-blur-sm">
-        <h3 className="text-xl font-semibold">How many differences can you spot?</h3>
+      <div className="w-full max-w-2xl bg-[#262628] border border-[#3c3c3f] rounded-2xl p-6 mt-4 flex flex-col items-center gap-4">
+        <h3 className="text-xl font-semibold text-[#e3e3e3]">How many differences can you spot?</h3>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           {guessOptions.map(option => {
             const isSelected = selectedGuess === option;
             const isDisabled = showResult || isVerifying;
             
-            let buttonClass = 'bg-gradient-to-br from-yellow-500 to-yellow-400 hover:shadow-xl';
+            let buttonClass = 'bg-[#3c3c3f] hover:bg-[#fbbf24] hover:text-[#1c1c1d] text-[#e3e3e3]';
             if (showResult && actualCount !== null) {
               const correctRange = actualCount >= 3 && actualCount <= 5 ? '3-5 differences' :
                                   actualCount >= 6 && actualCount <= 8 ? '6-8 differences' : 
@@ -173,11 +175,11 @@ const PlayGame: React.FC<PlayGameProps> = ({ onBackToMenu }) => {
               const isCorrect = option === correctRange;
               
               if (isCorrect) {
-                buttonClass = 'bg-gradient-to-br from-green-600 to-green-500 scale-105 shadow-xl';
+                buttonClass = 'bg-green-900/40 text-green-300 scale-105';
               } else if (isSelected) {
-                buttonClass = 'bg-gradient-to-br from-red-600 to-red-500';
+                buttonClass = 'bg-red-900/40 text-red-300';
               } else {
-                buttonClass = 'bg-gradient-to-br from-gray-700 to-gray-600 opacity-60';
+                buttonClass = 'bg-[#3c3c3f] text-[#9aa0a6] opacity-60';
               }
             }
 
@@ -185,7 +187,7 @@ const PlayGame: React.FC<PlayGameProps> = ({ onBackToMenu }) => {
                   <button
                     key={option}
                     onClick={() => !isDisabled && handleCheckAnswer(option)}
-                    className={`${buttonClass} text-white font-bold py-3 px-6 text-lg rounded-lg transition-all shadow-lg active:scale-95 disabled:shadow-none disabled:cursor-not-allowed relative`}
+                    className={`${buttonClass} font-bold py-3 px-6 text-lg rounded-full transition-all active:scale-95 disabled:cursor-not-allowed relative`}
                     disabled={isDisabled}
                   >
                     {isVerifying && isSelected ? (
@@ -225,9 +227,9 @@ const PlayGame: React.FC<PlayGameProps> = ({ onBackToMenu }) => {
             </button>
             <button
               onClick={onBackToMenu}
-              className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors"
+              className="bg-[#3c3c3f] hover:bg-[#4a4a4d] text-[#e3e3e3] font-bold py-3 px-6 rounded-lg text-lg transition-colors"
             >
-              Back to Menu
+              Back to Homepage
             </button>
           </div>
         )}

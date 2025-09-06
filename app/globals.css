@@ -81,3 +81,22 @@ input, textarea, select {
 .animate-shimmer {
   animation: shimmer 1.5s infinite;
 }
+
+/* Bounce in animation for modals */
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: translateY(100px) scale(0.9);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}

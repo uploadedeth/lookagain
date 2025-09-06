@@ -22,6 +22,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Handle click outside to close
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   useEffect(() => {
     fetchLeaderboard();
   }, []);
@@ -67,10 +74,16 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-[#262628] rounded-3xl max-w-4xl w-full max-h-[80vh] overflow-hidden animate-fade-in">
+    <div 
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      onClick={handleBackdropClick}
+    >
+      <div className="bg-[#262628] rounded-3xl max-w-4xl w-full max-h-[80vh] overflow-hidden animate-bounce-in">
         <div className="p-8 border-b border-[#3c3c3f] flex justify-between items-center">
-          <h2 className="text-2xl font-normal text-[#e3e3e3]">🏆 Leaderboard</h2>
+          <h2 className="text-2xl font-normal text-[#e3e3e3] flex items-center gap-2">
+            <span className="material-symbols-outlined">leaderboard</span>
+            Leaderboard
+          </h2>
           <button
             onClick={onClose}
             className="text-[#9aa0a6] hover:text-[#e3e3e3] transition-colors text-2xl p-2 hover:bg-[#3c3c3f] rounded-full"
