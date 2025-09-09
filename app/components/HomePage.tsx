@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './AuthProvider';
 import { generateInitialImage, planDifferences, generateModifiedImage } from '../actions/gemini';
-import { createGameRound, checkUserQuota, QuotaStatus } from '../lib/game-creation-client';
+import { createGameRound, checkUserQuota, checkAppQuotaOnly, QuotaStatus } from '../lib/game-creation-client';
 import Spinner from './Spinner';
 import QuotaDisplay from './QuotaDisplay';
 import ImageWithLoader from './ImageWithLoader';
@@ -124,14 +124,6 @@ const HomePage: React.FC = () => {
     router.push(`/play/${gameId}`);
   };
 
-  // Handle prompt input focus with authentication check
-  const handlePromptFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (!user) {
-      e.target.blur(); // Remove focus from input
-      setShowAuthModal(true);
-      return;
-    }
-  };
 
   // Fetch user quota on mount and when user changes
   useEffect(() => {
@@ -172,16 +164,23 @@ const HomePage: React.FC = () => {
     }
   }, [displayedDifferences, differences, loadingMessage]);
 
-  const handleSubmit = (e?: React.FormEvent) => {
+  const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     
-    // Check quota before showing difficulty modal
-    if (!user) {
-      setError('Please sign in to create games');
+    // Check app-wide quota before showing difficulty modal (no authentication required)
+    try {
+      const appQuotaCheck = await checkAppQuotaOnly();
+      if (!appQuotaCheck.success) {
+        setError(appQuotaCheck.error || 'App quota exceeded');
+        return;
+      }
+    } catch (error) {
+      setError('Failed to check quota. Please try again.');
       return;
     }
     
-    if (userQuota && userQuota.remaining === 0) {
+    // For authenticated users, also check their personal quota
+    if (user && userQuota && userQuota.remaining === 0) {
       setError(`You've reached your limit of ${userQuota.limit} games. Contact us to increase your quota.`);
       return;
     }
@@ -261,7 +260,13 @@ const HomePage: React.FC = () => {
   };
 
   const handleSaveGame = async () => {
-    if (!user || !userProfile || !originalImage || !modifiedImage) return;
+    // Check if user is authenticated
+    if (!user || !userProfile) {
+      setShowAuthModal(true);
+      return;
+    }
+    
+    if (!originalImage || !modifiedImage) return;
     
     setIsSaving(true);
     try {
@@ -349,7 +354,7 @@ const HomePage: React.FC = () => {
               ) : (
                 <>
                   <span className="material-symbols-outlined text-lg sm:text-xl">save</span>
-                  <span>Save & Share Game</span>
+                  <span>{user ? 'Save & Share Game' : 'Sign In to Save & Share'}</span>
                 </>
               )}
             </button>
@@ -388,7 +393,6 @@ const HomePage: React.FC = () => {
                   type="text"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
-                  onFocus={handlePromptFocus}
                   placeholder="Enter a scene description"
                   className="w-full px-4 sm:px-6 pt-4 sm:pt-4 pb-12 sm:pb-10 pr-12 sm:pr-14 bg-[#1c1c1d] border border-[#3c3c3f] rounded-2xl sm:rounded-3xl text-[#e3e3e3] text-base sm:text-lg placeholder-[#6e7681] focus:outline-none focus:border-[#fbbf24] transition-colors min-h-[56px] sm:min-h-[60px]"
                   disabled={isGenerating}

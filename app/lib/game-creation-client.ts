@@ -90,6 +90,48 @@ export async function checkAppQuota(): Promise<QuotaStatus> {
   }
 }
 
+// Check only app-wide quota for unauthenticated users via API
+export async function checkAppQuotaOnly(): Promise<QuotaCheckResult> {
+  try {
+    console.log('Checking app-wide quota via API...')
+    const response = await fetch('/api/check-app-quota')
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch app quota')
+    }
+    
+    const data = await response.json()
+    
+    if (!data.success) {
+      return {
+        success: false,
+        error: data.error || 'Failed to check app quota'
+      }
+    }
+    
+    console.log('App quota:', data.appQuota.used, '/', data.appQuota.limit)
+    
+    if (data.appQuota.remaining <= 0) {
+      return {
+        success: false,
+        appQuota: data.appQuota,
+        error: 'Application has reached its game creation limit. Please try again later.'
+      }
+    }
+    
+    return {
+      success: true,
+      appQuota: data.appQuota
+    }
+  } catch (error) {
+    console.error('Error checking app quota:', error)
+    return {
+      success: false,
+      error: 'Failed to verify quota. Please try again.'
+    }
+  }
+}
+
 export async function verifyAndConsumeQuota(userId: string): Promise<QuotaCheckResult> {
   try {
     // First, check app-wide quota
